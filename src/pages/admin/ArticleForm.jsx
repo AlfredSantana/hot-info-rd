@@ -5,6 +5,7 @@ import ImageUpload from '../../components/ImageUpload.jsx'
 import SourcesEditor from './SourcesEditor.jsx'
 import './Admin.css'
 import './SourcesEditor.css'
+import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 
 function slugify(text) {
   return text
@@ -38,6 +39,7 @@ export default function ArticleForm({ articleId }) {
   const [slugEdited, setSlugEdited] = useState(isEditing)
   const [status, setStatus] = useState(null)
   const [loadingData, setLoadingData] = useState(isEditing)
+  const [deleteTarget, setDeleteTarget] = useState(null)
 
   useEffect(() => {
     supabase.from('categorias').select('id, nombre').then(({ data }) => data && setCategorias(data))
@@ -85,15 +87,26 @@ export default function ArticleForm({ articleId }) {
     })
   }
 
-  async function handleDelete() {
-    if (!confirm('¿Eliminar esta noticia? Esta acción no se puede deshacer.')) return
-    const { error } = await supabase.from('noticias').delete().eq('id', articleId)
-    if (error) {
-      alert('No se pudo eliminar: ' + error.message)
-      return
-    }
-    navigate('/admin')
+  function requestDelete() {
+  setDeleteTarget(articleId)
+}
+
+async function confirmDelete() {
+  const { error } = await supabase
+    .from('noticias')
+    .delete()
+    .eq('id', deleteTarget)
+
+  setDeleteTarget(null)
+
+  if (error) {
+    console.error(error)
+    alert('No se pudo eliminar: ' + error.message)
+    return
   }
+
+  navigate('/admin')
+}
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -239,9 +252,9 @@ export default function ArticleForm({ articleId }) {
                 Cancelar
               </button>
               
-              <button type="button" onClick={handleDelete} className="admin-btn-danger">
-                Eliminar noticia
-              </button>
+              <button type="button" onClick={requestDelete} className="admin-btn-danger">
+  Eliminar noticia
+</button>
             </>
           )}
           <button type="submit" className="admin-btn-primary" disabled={status === 'saving'}>
@@ -249,6 +262,15 @@ export default function ArticleForm({ articleId }) {
           </button>
         </div>
       </form>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        title="Eliminar noticia"
+        message="Esta acción no se puede deshacer. ¿Seguro que quieres eliminarla?"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
+      
     </div>
   )
 }
