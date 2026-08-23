@@ -24,7 +24,7 @@
 }
 
 .admin-logo {
-  height: 40px;
+  height: 68px;
   width: auto;
   display: block;
 }
@@ -170,7 +170,7 @@
 }
 
 .admin-login-logo {
-  height: 34px;
+  height: 74px;
   width: auto;
 }
 
@@ -317,24 +317,27 @@
 
 /* --- Vista tabla (desktop) --- */
 
-/* --- Vista tabla (desktop) --- */
-
 .admin-table-wrapper {
   display: none;
 }
 
 .admin-table {
   width: 100%;
-  border-collapse: collapse;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.85rem;
 }
 
 .admin-table th,
 .admin-table td {
-  padding: 0.75rem;
+  box-sizing: border-box;
+  padding: 1rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  vertical-align: middle;
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .admin-table th {
@@ -345,22 +348,17 @@
   white-space: nowrap;
 }
 
-.col-title { width: 34%; }
-.col-category { width: 14%; }
-.col-author { width: 14%; }
-.col-date { width: 12%; }
-.col-status { width: 12%; }
-.col-actions { width: 14%; }
-
 .admin-table-title {
   font-weight: 600;
-  line-height: 1.4;
-  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.5;
 }
 
 .admin-table td:not(.admin-table-title) {
   white-space: nowrap;
 }
+
 /* --- Compartido (badge, acciones) --- */
 
 .admin-badge {
@@ -575,6 +573,7 @@
   font-size: 0.85rem;
   margin-bottom: 1rem;
 }
+
 
 /* ==========================================
    7. UTILIDADES RESPONSIVE

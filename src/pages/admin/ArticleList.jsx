@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient.js'
 import { formatDate } from '../../lib/formatDate.js'
 import './Admin.css'
+import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 
 export default function ArticleList() {
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
+  const [deleteTarget, setDeleteTarget] = useState(null)
 
   useEffect(() => {
     fetchArticles()
@@ -27,16 +29,20 @@ export default function ArticleList() {
     fetchArticles()
   }
 
-  async function handleDelete(id) {
-    if (!confirm('¿Eliminar esta noticia? Esta acción no se puede deshacer.')) return
-    const { error } = await supabase.from('noticias').delete().eq('id', id)
-    if (error) {
-      console.error(error)
-      alert('No se pudo eliminar: ' + error.message)
-      return
-    }
-    fetchArticles()
+  function requestDelete(id) {
+  setDeleteTarget(id)
+}
+
+async function confirmDelete() {
+  const { error } = await supabase.from('noticias').delete().eq('id', deleteTarget)
+  setDeleteTarget(null)
+  if (error) {
+    console.error(error)
+    alert('No se pudo eliminar: ' + error.message)
+    return
   }
+  fetchArticles()
+}
 
   function goToArticle(slug) {
     window.open(`/noticia/${slug}`, '_blank')
@@ -92,7 +98,7 @@ export default function ArticleList() {
                   </button>
                   <div className="admin-actions">
                     <Link to={`/admin/editar/${a.id}`}>Editar</Link>
-                    <button onClick={() => handleDelete(a.id)} className="admin-delete">Eliminar</button>
+                    <button onClick={() => requestDelete(a.id)} className="admin-delete">Eliminar</button>
                   </div>
                 </div>
               </div>
@@ -102,6 +108,14 @@ export default function ArticleList() {
           {/* Vista tabla — desktop */}
           <div className="admin-table-wrapper">
             <table className="admin-table">
+              <colgroup>
+                <col style={{ width: '30%' }} />
+                <col style={{ width: '15%' }} />
+                <col style={{ width: '13%' }} />
+                <col style={{ width: '14%' }} />
+                <col style={{ width: '13%' }} />
+                <col style={{ width: '15%' }} />
+             </colgroup>
               <thead>
                 <tr>
                   <th className="col-title">Título</th>
@@ -134,7 +148,7 @@ export default function ArticleList() {
                     </td>
                     <td className="admin-actions">
                       <Link to={`/admin/editar/${a.id}`}>Editar</Link>
-                      <button onClick={() => handleDelete(a.id)} className="admin-delete">Eliminar</button>
+                      <button onClick={() => requestDelete(a.id)} className="admin-delete">Eliminar</button>
                     </td>
                   </tr>
                 ))}
@@ -143,6 +157,14 @@ export default function ArticleList() {
           </div>
         </>
       )}
+
+      <ConfirmDialog
+  open={deleteTarget !== null}
+  title="Eliminar noticia"
+  message="Esta acción no se puede deshacer. ¿Seguro que quieres eliminarla?"
+  onConfirm={confirmDelete}
+  onCancel={() => setDeleteTarget(null)}
+/>
     </div>
   )
 }

@@ -21,12 +21,14 @@
   display: flex;
   align-items: center;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .navbar-logo img {
-  height: 54px;
+  height: 64px;
   width: auto;
   display: block;
+  flex-shrink: 0;
 }
 
 .navbar-links a {
@@ -231,7 +233,7 @@
   }
 
     .navbar-logo img {
-    height: 48px;
+    height: 68px;
   }
 
   .navbar-links-mobile {

@@ -26,12 +26,8 @@
   display: flex;
   gap: 2.5rem;
   white-space: nowrap;
-  animation: scroll-left 40s linear infinite;
   padding: 0.5rem 0;
-}
-
-.breaking-scroll:hover {
-  animation-play-state: paused;
+  will-change: transform;
 }
 
 .breaking-item {
@@ -39,14 +35,10 @@
   text-decoration: none;
   color: #fff;
   opacity: 0.9;
+  flex-shrink: 0;
 }
 
 .breaking-item:hover {
   opacity: 1;
   color: #ffdada;
-}
-
-@keyframes scroll-left {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }

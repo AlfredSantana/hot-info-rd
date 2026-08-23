@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient.js'
 import './Admin.css'
 
@@ -26,9 +26,10 @@ export default function AdminLogin() {
   return (
     <div className="admin-login-page">
       <div className="admin-login-card">
-        <Link to="/" className="admin-login-logo-link">
-          <img src="/logo.png" alt="Hot Info RD" className="admin-login-logo" />
-        </Link>
+        
+        <div className="admin-login-logo-link">
+  <img src="/logo.png" alt="Hot Info RD" className="admin-login-logo" />
+</div>
 
         <h1 className="admin-login-title">Acceso administrador</h1>
         <p className="admin-login-subtitle">Ingresa tus credenciales para gestionar noticias.</p>

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient.js'
 import ImageUpload from '../../components/ImageUpload.jsx'
-import './Admin.css'
 import SourcesEditor from './SourcesEditor.jsx'
+import './Admin.css'
 import './SourcesEditor.css'
 
 function slugify(text) {
@@ -44,7 +44,6 @@ export default function ArticleForm({ articleId }) {
     supabase.from('autores').select('id, nombre').then(({ data }) => {
       if (data) {
         setAutores(data)
-        // Si hay un solo autor, lo preselecciona automáticamente (menos pasos al redactar)
         if (data.length === 1 && !isEditing) {
           setForm((prev) => ({ ...prev, autor_id: data[0].id }))
         }
@@ -87,14 +86,14 @@ export default function ArticleForm({ articleId }) {
   }
 
   async function handleDelete() {
-  if (!confirm('¿Eliminar esta noticia? Esta acción no se puede deshacer.')) return
-  const { error } = await supabase.from('noticias').delete().eq('id', articleId)
-  if (error) {
-    alert('No se pudo eliminar: ' + error.message)
-    return
+    if (!confirm('¿Eliminar esta noticia? Esta acción no se puede deshacer.')) return
+    const { error } = await supabase.from('noticias').delete().eq('id', articleId)
+    if (error) {
+      alert('No se pudo eliminar: ' + error.message)
+      return
+    }
+    navigate('/admin')
   }
-  navigate('/admin')
-}
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -123,8 +122,8 @@ export default function ArticleForm({ articleId }) {
       return
     }
 
-    setStatus('success')
-    setTimeout(() => navigate('/admin'), 700)
+    // Publicado con éxito: va directo a la noticia real (ahí están los botones de copiar link / editar)
+    navigate(`/noticia/${form.slug}`)
   }
 
   function handleKeyDown(e) {
@@ -146,12 +145,10 @@ export default function ArticleForm({ articleId }) {
         <p className="only-mobile">Completa lo esencial y publica.</p>
       </div>
 
-      {status === 'success' && <p className="admin-success">Guardado correctamente.</p>}
       {status === 'error' && <p className="admin-error">Ocurrió un error al guardar.</p>}
 
       <form className="admin-form" onSubmit={handleSubmit}>
 
-        {/* Campos esenciales — siempre visibles */}
         <section className="admin-section">
           <label>
             Título
@@ -194,7 +191,6 @@ export default function ArticleForm({ articleId }) {
           </label>
         </section>
 
-        {/* Opciones avanzadas — colapsadas para reducir scroll */}
         <details className="admin-advanced">
           <summary>Opciones avanzadas</summary>
 
@@ -218,9 +214,9 @@ export default function ArticleForm({ articleId }) {
             </label>
 
             <label>
-  Fuentes (enlaces, imágenes o videos)
-  <SourcesEditor value={form.fuentes} onChange={(fuentes) => handleChange('fuentes', fuentes)} />
-</label>
+              Fuentes (enlaces, imágenes o videos)
+              <SourcesEditor value={form.fuentes} onChange={(fuentes) => handleChange('fuentes', fuentes)} />
+            </label>
 
             <div className="admin-form-row">
               <label>
@@ -237,20 +233,21 @@ export default function ArticleForm({ articleId }) {
         </details>
 
         <div className="admin-form-actions">
-  {isEditing && (
-    <>
-      <button type="button" onClick={() => navigate('/admin')} className="admin-btn-secondary">
-        Cancelar
-      </button>
-      <button type="button" onClick={handleDelete} className="admin-btn-danger">
-        Eliminar noticia
-      </button>
-    </>
-  )}
-  <button type="submit" className="admin-btn-primary" disabled={status === 'saving'}>
-    {status === 'saving' ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Publicar noticia'}
-  </button>
-</div>
+          {isEditing && (
+            <>
+              <button type="button" onClick={() => navigate('/admin')} className="admin-btn-secondary">
+                Cancelar
+              </button>
+              
+              <button type="button" onClick={handleDelete} className="admin-btn-danger">
+                Eliminar noticia
+              </button>
+            </>
+          )}
+          <button type="submit" className="admin-btn-primary" disabled={status === 'saving'}>
+            {status === 'saving' ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Publicar noticia'}
+          </button>
+        </div>
       </form>
     </div>
   )

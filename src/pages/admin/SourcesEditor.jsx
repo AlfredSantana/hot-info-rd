@@ -34,7 +34,7 @@ export default function SourcesEditor({ value = [], onChange }) {
   setUploading(true)
 
   try {
-    const compressed = await compressImage(file)
+    const compressed = await compressImage(file, { watermark: false })
     const fileExt = compressed.name.split('.').pop()
     const fileName = `fuentes/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`
 

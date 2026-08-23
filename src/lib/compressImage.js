@@ -1,10 +1,5 @@
-/**
- * Comprime una imagen en el navegador antes de subirla.
- * Redimensiona si excede el ancho máximo y ajusta calidad JPEG.
- */
-export function compressImage(file, { maxWidth = 1920, quality = 0.82 } = {}) {
+export function compressImage(file, { maxWidth = 1920, quality = 0.82, watermark = true } = {}) {
   return new Promise((resolve, reject) => {
-    // Si no es imagen o es muy pequeña, no hace falta comprimir
     if (!file.type.startsWith('image/')) {
       resolve(file)
       return
@@ -29,15 +24,33 @@ export function compressImage(file, { maxWidth = 1920, quality = 0.82 } = {}) {
         const ctx = canvas.getContext('2d')
         ctx.drawImage(img, 0, 0, width, height)
 
+        if (watermark) {
+          const text = 'HOT INFO RD'
+          const fontSize = Math.max(14, Math.round(width * 0.022))
+          ctx.font = `700 ${fontSize}px sans-serif`
+          ctx.textBaseline = 'bottom'
+
+          const paddingX = fontSize * 0.9
+          const paddingY = fontSize * 0.9
+          const textWidth = ctx.measureText(text).width
+
+          // Fondo semitransparente para que se lea sobre cualquier imagen
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.35)'
+          ctx.fillRect(
+            width - textWidth - paddingX * 2,
+            height - fontSize - paddingY * 1.4,
+            textWidth + paddingX * 2,
+            fontSize + paddingY * 0.9
+          )
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'
+          ctx.fillText(text, width - textWidth - paddingX, height - paddingY * 0.5)
+        }
+
         canvas.toBlob(
           (blob) => {
             if (!blob) {
               reject(new Error('No se pudo comprimir la imagen.'))
-              return
-            }
-            // Si la versión comprimida termina más pesada que el original, usa el original
-            if (blob.size >= file.size) {
-              resolve(file)
               return
             }
             const compressedFile = new File(
