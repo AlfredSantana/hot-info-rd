@@ -1,0 +1,634 @@
+/* ==========================================
+   1. LAYOUT (header + main del panel)
+   ========================================== */
+
+.admin-layout {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  gap: 0.75rem;
+}
+
+.admin-logo-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.admin-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.admin-nav a {
+  text-decoration: none;
+  color: var(--color-text-muted);
+  padding: 0.35rem 0;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.admin-nav a.is-active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+  font-weight: 600;
+}
+
+.admin-logout {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.admin-main {
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   2. BOTONES REUSABLES
+   ========================================== */
+
+.admin-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1.1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-btn-primary:hover {
+  background: var(--color-accent-dark);
+}
+
+.admin-btn-primary svg {
+  width: 16px;
+  height: 16px;
+}
+
+.admin-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-btn-secondary {
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.admin-btn-secondary:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.admin-btn-danger {
+  background: none;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.admin-btn-danger:hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* ==========================================
+   3. LOGIN
+   ========================================== */
+
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  padding: 1.5rem;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.admin-login-logo-link {
+  margin-bottom: 1.5rem;
+}
+
+.admin-login-logo {
+  height: 34px;
+  width: auto;
+}
+
+.admin-login-title {
+  font-size: 1.3rem;
+  margin: 0 0 0.4rem;
+}
+
+.admin-login-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: 0 0 2rem;
+  line-height: 1.5;
+}
+
+.admin-login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  text-align: left;
+}
+
+.admin-login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.admin-login-form input {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.admin-login-form input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.admin-login-submit {
+  width: 100%;
+  padding: 0.85rem;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.admin-login-back {
+  margin-top: 1.75rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.admin-login-back:hover {
+  color: var(--color-accent);
+}
+
+/* ==========================================
+   4. LISTADO DE NOTICIAS
+   ========================================== */
+
+.admin-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.admin-list-header h1 {
+  font-size: 1.3rem;
+}
+
+.admin-empty {
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 2rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-clickable {
+  cursor: pointer;
+}
+
+.admin-clickable:hover {
+  color: var(--color-accent);
+}
+
+/* --- Vista tarjetas (mobile, por defecto) --- */
+
+.admin-article-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-article-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-article-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+  line-height: 1.35;
+}
+
+.admin-article-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.admin-article-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* --- Vista tabla (desktop) --- */
+
+/* --- Vista tabla (desktop) --- */
+
+.admin-table-wrapper {
+  display: none;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.col-title { width: 34%; }
+.col-category { width: 14%; }
+.col-author { width: 14%; }
+.col-date { width: 12%; }
+.col-status { width: 12%; }
+.col-actions { width: 14%; }
+
+.admin-table-title {
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.admin-table td:not(.admin-table-title) {
+  white-space: nowrap;
+}
+/* --- Compartido (badge, acciones) --- */
+
+.admin-badge {
+  border: none;
+  border-radius: 12px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-badge.is-published { background: #eaffea; color: #1a7a1a; }
+.admin-badge.is-draft { background: #fff4e0; color: #9a6a00; }
+
+.admin-actions {
+  display: flex;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.admin-actions a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.admin-delete {
+  background: none;
+  border: none;
+  color: #b0b0b5;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.admin-delete:hover { color: var(--color-accent); }
+
+/* ==========================================
+   5. FORMULARIO (crear / editar noticia)
+   ========================================== */
+
+.admin-form-wrapper {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.admin-form-header {
+  margin-bottom: 1.5rem;
+}
+
+.admin-form-header h1 {
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.admin-form-header p {
+  font-size: 0.82rem;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.admin-form-header kbd {
+  background: var(--color-border);
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.admin-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  width: 100%;
+  background: var(--color-surface);
+  transition: border-color 0.15s ease;
+}
+
+.admin-form input:focus,
+.admin-form select:focus,
+.admin-form textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.admin-form textarea {
+  resize: vertical;
+}
+
+.admin-textarea-content {
+  min-height: 140px;
+}
+
+.admin-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-checkbox {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.5rem !important;
+  color: var(--color-text) !important;
+  font-weight: 500;
+}
+
+.admin-checkbox input {
+  width: auto;
+  accent-color: var(--color-accent);
+}
+
+.admin-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.admin-form-actions {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, var(--color-bg) 60%, transparent);
+  padding: 1rem 0 0.5rem;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.admin-form-actions .admin-btn-primary {
+  width: 100%;
+}
+
+/* Opciones avanzadas colapsables */
+.admin-advanced {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  margin-top: 1rem;
+}
+
+.admin-advanced summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  list-style: none;
+}
+
+.admin-advanced summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-advanced summary::before {
+  content: '▸ ';
+  color: var(--color-accent);
+}
+
+.admin-advanced[open] summary::before {
+  content: '▾ ';
+}
+
+.admin-advanced-content {
+  padding: 0 1rem 1rem;
+}
+
+/* ==========================================
+   6. ESTADOS (mensajes de éxito / error)
+   ========================================== */
+
+.admin-error {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  padding: 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.admin-success {
+  background: #eaffea;
+  color: #1a7a1a;
+  padding: 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================
+   7. UTILIDADES RESPONSIVE
+   ========================================== */
+
+.only-mobile { display: block; }
+.only-desktop { display: none; }
+
+/* ==========================================
+   8. DESKTOP (>= 768px)
+   ========================================== */
+
+@media (min-width: 768px) {
+  .admin-main {
+    padding: 2rem 1.5rem;
+  }
+
+  .admin-form-row {
+    flex-direction: row;
+  }
+
+  .admin-form-row label {
+    flex: 1;
+  }
+
+  .admin-textarea-content {
+    min-height: 220px;
+  }
+
+  .admin-form-actions {
+    background: none;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+  }
+
+  .admin-form-actions .admin-btn-primary,
+  .admin-form-actions .admin-btn-secondary,
+  .admin-form-actions .admin-btn-danger {
+    width: auto;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .only-mobile { display: none; }
+  .only-desktop { display: block; }
+
+  .admin-article-cards {
+    display: none;
+  }
+
+  .admin-table-wrapper {
+    display: block;
+    overflow-x: auto;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+}

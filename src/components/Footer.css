@@ -1,0 +1,135 @@
+.footer {
+  margin-top: var(--space-4);
+  background: var(--color-text);
+  color: #d5d5d8;
+}
+
+.footer-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.footer-col {
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-col:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.footer-logo {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 0.6rem;
+}
+
+.footer-tagline {
+  font-size: 0.85rem;
+  color: #a5a5aa;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 320px;
+}
+
+.footer-col h3 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  margin-bottom: 0.85rem;
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.footer-col a {
+  text-decoration: none;
+  color: #c5c5ca;
+  font-size: 0.85rem;
+}
+
+.footer-col a:hover {
+  color: var(--color-accent);
+}
+
+.footer-social {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+}
+
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d5d5d8;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.footer-social-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.footer-social-icon:hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--space-2);
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #8a8a90;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-admin-link {
+  font-size: 0.72rem;
+  color: #5a5a60;
+  text-decoration: none;
+}
+
+.footer-admin-link:hover {
+  color: #8a8a90;
+}
+
+@media (min-width: 768px) {
+  .footer-content {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  .footer-col {
+    padding-top: 0;
+    border-top: none;
+  }
+}

@@ -1,0 +1,52 @@
+.breaking-bar {
+  display: flex;
+  align-items: center;
+  background: var(--color-text);
+  color: #fff;
+  overflow: hidden;
+}
+
+.breaking-label {
+  flex-shrink: 0;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 0.75rem;
+}
+
+.breaking-track {
+  overflow: hidden;
+  flex: 1;
+}
+
+.breaking-scroll {
+  display: flex;
+  gap: 2.5rem;
+  white-space: nowrap;
+  animation: scroll-left 40s linear infinite;
+  padding: 0.5rem 0;
+}
+
+.breaking-scroll:hover {
+  animation-play-state: paused;
+}
+
+.breaking-item {
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.breaking-item:hover {
+  opacity: 1;
+  color: #ffdada;
+}
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

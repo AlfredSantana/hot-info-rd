@@ -1,0 +1,121 @@
+.sources-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sources-editor-type-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sources-editor-type-btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.sources-editor-type-btn.is-active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.sources-editor-url-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sources-editor-url-row input {
+  flex: 1;
+}
+
+.sources-editor-add-btn {
+  background: var(--color-text);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sources-editor-file-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.sources-editor-file-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.sources-editor-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sources-editor-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.5rem 0.35rem 0.75rem;
+  max-width: 100%;
+}
+
+.sources-editor-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.sources-editor-tag-enlace { background: #e6f0ff; color: #1a56db; }
+.sources-editor-tag-imagen { background: #eaffea; color: #1a7a1a; }
+.sources-editor-tag-video { background: var(--color-accent-soft); color: var(--color-accent); }
+
+.sources-editor-chip-url {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sources-editor-remove {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.2rem;
+}
+
+.sources-editor-remove:hover {
+  color: var(--color-accent);
+}

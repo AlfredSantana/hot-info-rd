@@ -1,0 +1,23 @@
+.related-articles {
+  margin: var(--space-4) 0;
+  padding: 0 1rem;
+}
+
+.related-articles h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .related-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

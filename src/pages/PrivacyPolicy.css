@@ -1,0 +1,15 @@
+.privacy-page {
+  padding: 1.5rem 1rem;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.privacy-page h1 {
+  margin-bottom: 0.25rem;
+}
+
+.privacy-page h2 {
+  margin-top: 1.75rem;
+  font-size: 1.15rem;
+}

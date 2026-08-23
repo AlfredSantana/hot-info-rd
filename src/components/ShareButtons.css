@@ -1,0 +1,37 @@
+.share-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1.25rem 0;
+}
+
+.share-label {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+
+.share-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.share-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.share-icon:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+.share-icon-fb { background: #1877f2; }
+.share-icon-wa { background: #25d366; }

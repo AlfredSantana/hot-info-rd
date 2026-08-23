@@ -1,0 +1,22 @@
+.search-page {
+  padding: 1.5rem 1rem;
+}
+
+.search-page h1 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .search-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .search-grid { grid-template-columns: repeat(3, 1fr); }
+}
