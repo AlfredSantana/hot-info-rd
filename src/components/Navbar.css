@@ -54,7 +54,6 @@
   display: inline-flex;
   align-items: center;
   background: var(--color-accent);
-  color: #fff;
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 700;
@@ -65,6 +64,7 @@
 
 .navbar-admin-btn:hover {
   background: var(--color-accent-dark);
+  color: #ffffff !important;
 }
 
 /* ==========================================
@@ -149,7 +149,8 @@
 }
 
 .navbar-links-mobile.is-open {
-  max-height: 300px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
   border-top: 1px solid var(--color-border);
 }
 
@@ -159,10 +160,9 @@
 }
 
 .navbar-admin-link-mobile {
-  color: var(--color-accent) !important;
+  color: var(--color-accent);
   font-weight: 700 !important;
 }
-
 /* ==========================================
    NAVBAR LOGIN
    ========================================== */
@@ -210,7 +210,8 @@
   padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--color-border);
   font-size: 0.9rem;
-  color: var(--color-text-muted);
+  color: var(--color-accent);
+  font-weight: 700 !important;
   cursor: pointer;
   width: 100%;
   font-family: var(--font-sans);

@@ -1,12 +1,16 @@
-import { Link } from 'react-router-dom'
-import './Footer.css'
+import { Link } from "react-router-dom";
+import "./Footer.css";
 
 const CATEGORIES = [
-  { slug: 'farandula', label: 'Farándula' },
-  { slug: 'entretenimiento', label: 'Entretenimiento' },
-  { slug: 'virales', label: 'Virales' },
-  { slug: 'actualidad', label: 'Actualidad' },
-]
+  { slug: "farandula", label: "Farándula" },
+  { slug: "entretenimiento", label: "Entretenimiento" },
+  { slug: "virales", label: "Virales" },
+  { slug: "actualidad", label: "Actualidad" },
+  { slug: "politica", label: "Política" },
+  { slug: "salud", label: "Salud" },
+  { slug: "tecnologia", label: "Tecnología" },
+  { slug: "deportes", label: "Deportes" },
+];
 
 export default function Footer() {
   return (
@@ -15,7 +19,8 @@ export default function Footer() {
         <div className="footer-col">
           <img src="/logo.png" alt="Hot Info RD" className="footer-logo" />
           <p className="footer-tagline">
-            Farándula, entretenimiento, virales y actualidad de República Dominicana.
+            Farándula, entretenimiento, virales y actualidad de República
+            Dominicana.
           </p>
         </div>
 
@@ -33,9 +38,8 @@ export default function Footer() {
         <div className="footer-col">
           <h3>Síguenos</h3>
           <div className="footer-social">
-
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/hotinford/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -47,7 +51,7 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/hotinford/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -59,7 +63,7 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://x.com"
+              href="https://x.com/HotInfoRD"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X (Twitter)"
@@ -69,7 +73,6 @@ export default function Footer() {
                 <path d="M18.24 2h3.14l-6.87 7.85L22.5 22h-6.32l-4.95-6.47L5.53 22H2.38l7.35-8.4L1.5 2h6.48l4.47 5.9L18.24 2Zm-1.1 18.17h1.74L7 3.75H5.13l12.01 16.42Z" />
               </svg>
             </a>
-
           </div>
         </div>
 
@@ -84,8 +87,11 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Hot Info RD. Todos los derechos reservados.</p>
+        <p>
+          © {new Date().getFullYear()} Hot Info RD. Todos los derechos
+          reservados.
+        </p>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,0 +1,174 @@
+.featured-carousel {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  aspect-ratio: 16 / 9;
+}
+
+.featured-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.featured-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.featured-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.featured-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+  color: #fff;
+  padding: 2rem 1.25rem 1.5rem;
+}
+
+.featured-category {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.featured-body h1 {
+  font-size: 1.3rem;
+  margin: 0.4rem 0;
+  color: #fff;
+}
+
+.featured-body p {
+  font-size: 0.85rem;
+  color: #eee;
+  margin: 0;
+}
+
+.featured-dots {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.featured-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  padding: 0;
+}
+
+.featured-dots button.is-active {
+  background: #fff;
+  width: 20px;
+  border-radius: 4px;
+}
+
+/* ==========================================
+   FLECHAS DEL CARRUSEL
+   ========================================== */
+
+.featured-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+
+  font-size: 2rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+
+.featured-carousel:hover .featured-arrow {
+  opacity: 1;
+}
+
+.featured-arrow:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.featured-arrow-prev {
+  left: 0.75rem;
+}
+
+.featured-arrow-next {
+  right: 0.75rem;
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 767px) {
+
+  /* En móvil no mostramos flechas */
+  .featured-arrow {
+    display: none;
+  }
+
+  /* El usuario puede deslizar horizontalmente */
+  .featured-carousel {
+    touch-action: pan-y;
+  }
+
+  /* Ocultar el párrafo en móvil */
+  .featured-body p {
+    display: none;
+  }
+
+  .featured-body {
+    padding: 2rem 1rem 1.25rem;
+  }
+
+  .featured-body h1 {
+    font-size: 1.15rem;
+    margin: 0.35rem 0 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .featured-body h1 { font-size: 1.9rem; }
+}
+
+@media (max-width: 767px) {
+  .featured-body p {
+    display: none;
+  }
+}

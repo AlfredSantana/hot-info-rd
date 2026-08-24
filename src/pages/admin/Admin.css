@@ -55,12 +55,17 @@
 .admin-logout {
   background: none;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   padding: 0.4rem 0.7rem;
   cursor: pointer;
   font-size: 0.78rem;
   color: var(--color-text-muted);
   white-space: nowrap;
+}
+
+.admin-logout:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .admin-main {
@@ -81,7 +86,7 @@
   background: var(--color-accent);
   color: #fff;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   padding: 0.65rem 1.1rem;
   font-weight: 600;
   font-size: 0.9rem;
