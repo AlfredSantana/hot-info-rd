@@ -36,3 +36,13 @@
   color: #555;
   margin: 0;
 }
+
+.article-card-image-wrapper {
+  position: relative;
+}
+
+.article-card-image-wrapper .trending-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}

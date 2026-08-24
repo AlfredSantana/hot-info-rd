@@ -26,6 +26,7 @@ function mapNoticia(n) {
     excerpt: n.excerpt,
     cover_image: n.cover_image,
     category: n.categorias?.nombre ?? "",
+    views: n.views,
   };
 }
 
@@ -64,7 +65,10 @@ export default function Home() {
       if (!error && latest) {
         const mapped = latest.map(mapNoticia);
         setArticles(mapped);
-        setPopular(mapped.slice(1, 6));
+        const sorted = [...mapped].sort(
+          (a, b) => (b.views || 0) - (a.views || 0),
+        );
+        setPopular(sorted.slice(0, 5));
       }
 
       const sectionMap = {};

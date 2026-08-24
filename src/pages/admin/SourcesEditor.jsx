@@ -33,6 +33,8 @@ export default function SourcesEditor({ value = [], onChange }) {
     if (files.length === 0) return;
     setUploading(true);
 
+    const newSources = [];
+
     for (const file of files) {
       try {
         const compressed = await compressImage(file, { watermark: false });
@@ -50,13 +52,17 @@ export default function SourcesEditor({ value = [], onChange }) {
           const { data } = supabase.storage
             .from("noticias")
             .getPublicUrl(fileName);
-          addSource(data.publicUrl, "imagen");
+          newSources.push({ id: uid(), type: "imagen", url: data.publicUrl });
         } else {
           console.error("Error al subir fuente:", error);
         }
       } catch (err) {
         console.error("Error al comprimir imagen de fuente:", err);
       }
+    }
+
+    if (newSources.length > 0) {
+      onChange([...value, ...newSources]);
     }
 
     setUploading(false);
@@ -83,6 +89,7 @@ export default function SourcesEditor({ value = [], onChange }) {
           <input
             type="file"
             accept="image/*"
+            multiple
             onChange={handleFileUpload}
             disabled={uploading}
             hidden
