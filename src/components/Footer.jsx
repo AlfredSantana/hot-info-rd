@@ -4,6 +4,7 @@ import "./Footer.css";
 const CATEGORIES = [
   { slug: "farandula", label: "Farándula" },
   { slug: "entretenimiento", label: "Entretenimiento" },
+  { slug: "musica", label: "Música" },
   { slug: "virales", label: "Virales" },
   { slug: "actualidad", label: "Actualidad" },
   { slug: "politica", label: "Política" },
@@ -81,6 +82,9 @@ export default function Footer() {
           <ul>
             <li>
               <Link to="/politica-de-privacidad">Política de Privacidad</Link>
+            </li>
+            <li>
+              <Link to="/terminos-de-uso">Términos de Uso</Link>
             </li>
           </ul>
         </div>

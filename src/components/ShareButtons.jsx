@@ -1,11 +1,11 @@
-import './ShareButtons.css'
+import "./ShareButtons.css";
 
 export default function ShareButtons({ url, title }) {
-  const encodedUrl = encodeURIComponent(url)
-  const encodedTitle = encodeURIComponent(title)
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
 
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
-  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`
+  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
 
   return (
     <div className="share-buttons">
@@ -35,5 +35,5 @@ export default function ShareButtons({ url, title }) {
         </svg>
       </a>
     </div>
-  )
+  );
 }

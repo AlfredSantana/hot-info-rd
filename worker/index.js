@@ -82,6 +82,7 @@ async function handleSitemap(env, siteUrl) {
   <url><loc>${siteUrl}/</loc><changefreq>hourly</changefreq></url>
   <url><loc>${siteUrl}/categoria/farandula</loc><changefreq>daily</changefreq></url>
   <url><loc>${siteUrl}/categoria/entretenimiento</loc><changefreq>daily</changefreq></url>
+  <url><loc>${siteUrl}/categoria/musica</loc><changefreq>daily</changefreq></url>
   <url><loc>${siteUrl}/categoria/virales</loc><changefreq>daily</changefreq></url>
   <url><loc>${siteUrl}/categoria/actualidad</loc><changefreq>daily</changefreq></url>
   <url><loc>${siteUrl}/categoria/politica</loc><changefreq>daily</changefreq></url>

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import "./ArticleCard.css";
 import TrendingBadge from "./TrendingBadge.jsx";
+import CategoryBadge from "./CategoryBadge.jsx";
+import "./CategoryBadge.css";
 
 export default function ArticleCard({ article }) {
   return (
@@ -10,7 +12,21 @@ export default function ArticleCard({ article }) {
         <TrendingBadge views={article.views} />
       </div>
       <div className="article-card-body">
-        <span className="article-card-category">{article.category}</span>
+        <div className="article-card-tags">
+          <CategoryBadge
+            nombre={article.category}
+            color={article.categoryColor}
+            size="sm"
+          />
+          {article.tags?.slice(0, 2).map((t, i) => (
+            <CategoryBadge
+              key={i}
+              nombre={t.nombre}
+              color={t.color}
+              size="sm"
+            />
+          ))}
+        </div>
         <h2>{article.title}</h2>
         <p>{article.excerpt}</p>
       </div>

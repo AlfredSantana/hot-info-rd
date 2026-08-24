@@ -7,6 +7,7 @@ import "./Navbar.css";
 const CATEGORIES = [
   { slug: "farandula", label: "Farándula" },
   { slug: "entretenimiento", label: "Entretenimiento" },
+  { slug: "musica", label: "Música" },
   { slug: "virales", label: "Virales" },
   { slug: "actualidad", label: "Actualidad" },
   { slug: "politica", label: "Política" },

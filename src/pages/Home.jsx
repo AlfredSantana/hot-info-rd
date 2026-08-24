@@ -10,6 +10,7 @@ import "./Home.css";
 const SECTIONS = [
   { slug: "farandula", label: "Farándula" },
   { slug: "entretenimiento", label: "Entretenimiento" },
+  { slug: "musica", label: "Música" },
   { slug: "virales", label: "Virales" },
   { slug: "actualidad", label: "Actualidad" },
   { slug: "politica", label: "Política" },
@@ -26,7 +27,9 @@ function mapNoticia(n) {
     excerpt: n.excerpt,
     cover_image: n.cover_image,
     category: n.categorias?.nombre ?? "",
+    categoryColor: n.categorias?.color ?? "#666",
     views: n.views,
+    tags: (n.noticia_tags || []).map((t) => t.categorias).filter(Boolean),
   };
 }
 
@@ -43,7 +46,9 @@ export default function Home() {
       // Últimas noticias para hero + grid + sidebar
       const { data: latest, error } = await supabase
         .from("noticias")
-        .select("*, categorias(nombre, slug)")
+        .select(
+          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), noticia_tags(categorias(nombre, color))",
+        )
         .eq("published", true)
         .order("published_at", { ascending: false })
         .limit(20);
@@ -52,7 +57,9 @@ export default function Home() {
       const sectionQueries = SECTIONS.map((s) =>
         supabase
           .from("noticias")
-          .select("*, categorias!inner(nombre, slug)")
+          .select(
+            "*, categorias!noticias_categoria_id_fkey!inner(nombre, slug, color), noticia_tags(categorias(nombre, color))",
+          )
           .eq("published", true)
           .eq("categorias.slug", s.slug)
           .order("published_at", { ascending: false })

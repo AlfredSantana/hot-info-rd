@@ -9,6 +9,7 @@ import SourcesDisplay from "../components/SourcesDisplay.jsx";
 import "./ArticlePage.css";
 import { Link } from "react-router-dom";
 import { formatDate } from "../lib/formatDate.js";
+import CategoryBadge from "../components/CategoryBadge.jsx";
 
 export default function ArticlePage() {
   const { slug } = useParams();
@@ -33,7 +34,9 @@ export default function ArticlePage() {
     async function fetchArticle() {
       const { data, error } = await supabase
         .from("noticias")
-        .select("*, categorias(nombre, slug), autores(nombre, avatar_url)")
+        .select(
+          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url), noticia_tags(categorias(nombre, slug, color))",
+        )
         .eq("slug", slug)
         .eq("published", true)
         .single();
@@ -54,7 +57,11 @@ export default function ArticlePage() {
     const key = `viewed-${article.id}`;
     if (sessionStorage.getItem(key)) return;
     sessionStorage.setItem(key, "1");
-    supabase.rpc("increment_views", { noticia_id: article.id });
+    supabase
+      .rpc("increment_views", { noticia_id: article.id })
+      .then(({ error }) => {
+        if (error) console.error("Error al incrementar vistas:", error);
+      });
   }, [article]);
 
   if (loading) return <div className="article-loading">Cargando…</div>;
@@ -77,7 +84,21 @@ export default function ArticlePage() {
       />
 
       <article className="article">
-        <span className="tag-category">{article.categorias?.nombre}</span>
+        <div className="article-tags-row">
+          <CategoryBadge
+            nombre={article.categorias?.nombre}
+            color={article.categorias?.color}
+            size="md"
+          />
+          {(article.noticia_tags || []).map((t) => (
+            <CategoryBadge
+              key={t.categorias.slug}
+              nombre={t.categorias.nombre}
+              color={t.categorias.color}
+              size="md"
+            />
+          ))}
+        </div>
         <h1>{article.titulo}</h1>
 
         <div className="article-meta">
@@ -149,9 +170,11 @@ export default function ArticlePage() {
         />
       </article>
 
-      <SourcesDisplay sources={article.fuentes} />
       <RelatedArticles
         categoriaId={article.categoria_id}
+        tagIds={(article.noticia_tags || [])
+          .map((t) => t.categoria_id)
+          .filter(Boolean)}
         currentId={article.id}
       />
     </>

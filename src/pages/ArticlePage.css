@@ -139,3 +139,10 @@
     font-size: 1.08rem;
   }
 }
+
+.article-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}

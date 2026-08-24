@@ -46,3 +46,10 @@
   top: 0.5rem;
   left: 0.5rem;
 }
+
+.article-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.4rem;
+}

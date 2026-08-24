@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./FeaturedCarousel.css";
+import CategoryBadge from "./CategoryBadge.jsx";
 
 export default function FeaturedCarousel({ articles }) {
   const [index, setIndex] = useState(0);
@@ -67,10 +68,22 @@ export default function FeaturedCarousel({ articles }) {
           <img src={article.cover_image} alt={article.title} />
 
           <div className="featured-body">
-            <span className="featured-category">{article.category}</span>
-
+            <div className="featured-tags-row">
+              <CategoryBadge
+                nombre={article.category}
+                color={article.categoryColor}
+                size="sm"
+              />
+              {article.tags?.slice(0, 2).map((t, i) => (
+                <CategoryBadge
+                  key={i}
+                  nombre={t.nombre}
+                  color={t.color}
+                  size="sm"
+                />
+              ))}
+            </div>
             <h1>{article.title}</h1>
-
             <p>{article.excerpt}</p>
           </div>
         </Link>

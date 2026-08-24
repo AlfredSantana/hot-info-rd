@@ -38,11 +38,11 @@
   padding: 2rem 1.25rem 1.5rem;
 }
 
-.featured-category {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  font-weight: 700;
+.featured-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
 }
 
 .featured-body h1 {

@@ -1,0 +1,19 @@
+.category-badge {
+  display: inline-block;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.category-badge-md {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+}
+
+.category-badge-sm {
+  font-size: 0.62rem;
+  padding: 0.12rem 0.4rem;
+}
