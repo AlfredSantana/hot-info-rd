@@ -25,8 +25,8 @@ export default function App() {
           <Route path="/noticia/:slug" element={<ArticlePage />} />
           <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
           <Route path="/terminos-de-uso" element={<TermsOfUse />} />
+          <Route path="/buscar" element={<SearchPage />} />
         </Route>
-        <Route path="/buscar" element={<SearchPage />} />
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route

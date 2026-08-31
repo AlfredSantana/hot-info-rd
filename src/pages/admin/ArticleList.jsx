@@ -19,7 +19,7 @@ export default function ArticleList() {
     const { data } = await supabase
       .from("noticias")
       .select(
-        "id, slug, titulo, published, published_at, categorias!noticias_categoria_id_fkey(nombre), autores(nombre)",
+        "id, slug, titulo, published, published_at, categorias!noticias_categoria_id_fkey(nombre, color), autores(nombre)",
       )
       .order("published_at", { ascending: false });
     setArticles(data || []);

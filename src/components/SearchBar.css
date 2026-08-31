@@ -58,3 +58,16 @@
 .navbar-search-mobile .search-bar input {
   width: 100%;
 }
+
+.search-page-bar {
+  margin-bottom: 1.25rem;
+  max-width: 400px;
+}
+
+.search-page-bar .search-bar {
+  width: 100%;
+}
+
+.search-page-bar .search-bar input {
+  width: 100%;
+}
