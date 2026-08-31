@@ -1,8 +1,12 @@
+import { useSession } from "../lib/useSession.js";
 import "./TrendingBadge.css";
 
-const THRESHOLD = 1; // vistas mínimas para mostrar el badge
+const THRESHOLD = 50;
 
 export default function TrendingBadge({ views }) {
+  const session = useSession();
+
+  if (!session) return null;
   if (!views || views < THRESHOLD) return null;
 
   return (

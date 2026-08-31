@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient.js";
 import { formatArticleContent } from "../lib/formatContent.js";
+import { formatDate } from "../lib/formatDate.js";
+import { useSession } from "../lib/useSession.js";
 import SEO from "../components/SEO.jsx";
 import ShareButtons from "../components/ShareButtons.jsx";
 import RelatedArticles from "../components/RelatedArticles.jsx";
 import SourcesDisplay from "../components/SourcesDisplay.jsx";
-import "./ArticlePage.css";
-import { Link } from "react-router-dom";
-import { formatDate } from "../lib/formatDate.js";
 import CategoryBadge from "../components/CategoryBadge.jsx";
+import "./ArticlePage.css";
 
 export default function ArticlePage() {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState(null);
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-  }, []);
+  const session = useSession();
 
   function copyRedactorLink() {
     const message = `Amplía esta noticia en: ${url}`;
@@ -35,7 +31,7 @@ export default function ArticlePage() {
       const { data, error } = await supabase
         .from("noticias")
         .select(
-          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url), noticia_tags(categorias(nombre, slug, color))",
+          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url), noticia_tags(categoria_id, categorias(nombre, slug, color))",
         )
         .eq("slug", slug)
         .eq("published", true)
@@ -169,6 +165,8 @@ export default function ArticlePage() {
           }}
         />
       </article>
+
+      <SourcesDisplay sources={article.fuentes} />
 
       <RelatedArticles
         categoriaId={article.categoria_id}
