@@ -10,6 +10,23 @@ import RelatedArticles from "../components/RelatedArticles.jsx";
 import SourcesDisplay from "../components/SourcesDisplay.jsx";
 import CategoryBadge from "../components/CategoryBadge.jsx";
 import "./ArticlePage.css";
+import PromoSlot from "../components/PromoSlot.jsx";
+
+const PROMO_HOME = [
+  {
+    image: "/promo/banner-redes-1600x686px.mp4",
+    link: "https://instagram.com/hotinford",
+    alt: "Síguenos en Instagram y Facebook",
+  },
+];
+
+const PROMO_ARTICLE = [
+  {
+    image: "/promo/banner-redes-1200x900px.mp4",
+    link: "https://instagram.com/hotinford",
+    alt: "Síguenos en Instagram y Facebook",
+  },
+];
 
 export default function ArticlePage() {
   const { slug } = useParams();
@@ -78,6 +95,8 @@ export default function ArticlePage() {
         publishedTime={article.published_at}
         section={article.categorias?.nombre}
       />
+
+      <PromoSlot items={PROMO_HOME} aspectRatio="1600 / 686" />
 
       <article className="article">
         <div className="article-tags-row">
@@ -165,6 +184,10 @@ export default function ArticlePage() {
           }}
         />
       </article>
+
+      <div className="article-promo-wrapper">
+        <PromoSlot items={PROMO_ARTICLE} aspectRatio="1200 / 900" />
+      </div>
 
       <SourcesDisplay sources={article.fuentes} />
 

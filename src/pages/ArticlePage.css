@@ -146,3 +146,22 @@
   gap: 0.4rem;
   margin-bottom: 0.5rem;
 }
+
+.article-promo-wrapper {
+  padding: 0 1rem;
+  max-width: 340px;
+  margin: 0 auto;  
+}
+
+@media (max-width: 767px) {
+  .article-promo-wrapper {
+    max-width: 500px;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .article-promo-wrapper {
+    max-width: 380px;
+  }
+}

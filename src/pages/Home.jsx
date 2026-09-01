@@ -6,6 +6,15 @@ import Sidebar from "../components/Sidebar.jsx";
 import CategorySection from "../components/CategorySection.jsx";
 import SEO from "../components/SEO.jsx";
 import "./Home.css";
+import PromoSlot from "../components/PromoSlot.jsx";
+
+const PROMO_HOME = [
+  {
+    image: "/promo/banner-redes-1600x686px.mp4",
+    link: "https://instagram.com/hotinford",
+    alt: "Síguenos en Instagram y Facebook",
+  },
+];
 
 const SECTIONS = [
   { slug: "farandula", label: "Farándula" },
@@ -111,6 +120,8 @@ export default function Home() {
       />
 
       <FeaturedCarousel articles={articles.slice(0, 5)} />
+
+      <PromoSlot items={PROMO_HOME} aspectRatio="1600 / 686" />
 
       <div className="home-layout">
         <section className="home-grid">

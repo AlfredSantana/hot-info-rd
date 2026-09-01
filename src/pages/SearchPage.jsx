@@ -26,7 +26,7 @@ function mapNoticia(n) {
     cover_image: n.cover_image,
     category: n.categorias?.nombre ?? "",
     categoryColor: n.categorias?.color ?? "#666",
-    tags: [],
+    tags: (n.noticia_tags || []).map((t) => t.categorias).filter(Boolean),
   };
 }
 
@@ -50,7 +50,9 @@ export default function SearchPage() {
     setLoading(true);
     supabase
       .from("noticias")
-      .select("*, categorias!noticias_categoria_id_fkey(nombre, slug, color)")
+      .select(
+        "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), noticia_tags(categorias(nombre, slug, color))",
+      )
       .eq("published", true)
       .or(`titulo.ilike.%${query}%,excerpt.ilike.%${query}%`)
       .order("published_at", { ascending: false })
@@ -67,19 +69,20 @@ export default function SearchPage() {
     };
   }, [query]);
 
+  function articleHasCategory(article, slug) {
+    const label = CATEGORIES.find((c) => c.slug === slug)?.label.toLowerCase();
+    if (!label) return false;
+    if (article.category.toLowerCase() === label) return true;
+    return article.tags.some((t) => t.nombre.toLowerCase() === label);
+  }
+
   const filtered =
     activeFilter === "all"
       ? results
-      : results.filter(
-          (r) =>
-            r.category.toLowerCase() ===
-            CATEGORIES.find(
-              (c) => c.slug === activeFilter,
-            )?.label.toLowerCase(),
-        );
+      : results.filter((r) => articleHasCategory(r, activeFilter));
 
   const categoriesInResults = CATEGORIES.filter((c) =>
-    results.some((r) => r.category.toLowerCase() === c.label.toLowerCase()),
+    results.some((r) => articleHasCategory(r, c.slug)),
   );
 
   return (

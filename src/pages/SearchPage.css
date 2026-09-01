@@ -4,6 +4,12 @@
   margin: 0 auto;
 }
 
+.search-page {
+  overflow-x: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
 .search-breadcrumb {
   display: flex;
   gap: 0.4rem;

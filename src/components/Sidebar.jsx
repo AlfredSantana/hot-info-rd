@@ -1,5 +1,14 @@
-import { Link } from 'react-router-dom'
-import './Sidebar.css'
+import { Link } from "react-router-dom";
+import "./Sidebar.css";
+import PromoSlot from "./PromoSlot.jsx";
+
+const PROMO_SIDEBAR = [
+  {
+    image: "/promo/banner-redes-1000x1250px.mp4",
+    link: "https://instagram.com/hotinford",
+    alt: "Síguenos en Instagram y Facebook",
+  },
+];
 
 export default function Sidebar({ articles }) {
   return (
@@ -15,6 +24,8 @@ export default function Sidebar({ articles }) {
           </li>
         ))}
       </ol>
+
+      <PromoSlot items={PROMO_SIDEBAR} aspectRatio="1000 / 1250" />
     </aside>
-  )
+  );
 }
