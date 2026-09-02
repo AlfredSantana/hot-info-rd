@@ -1,13 +1,13 @@
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { supabase } from '../../lib/supabaseClient.js'
-import './Admin.css'
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabaseClient.js";
+import "./Admin.css";
 
 export default function AdminLayout() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   async function handleLogout() {
-    await supabase.auth.signOut()
-    navigate('/admin/login')
+    await supabase.auth.signOut();
+    navigate("/admin/login");
   }
 
   return (
@@ -18,18 +18,29 @@ export default function AdminLayout() {
         </Link>
 
         <nav className="admin-nav">
-          <NavLink to="/admin" end className={({ isActive }) => isActive ? 'is-active' : ''}>
+          <NavLink
+            to="/admin/redactores"
+            className={({ isActive }) => (isActive ? "is-active" : "")}
+          >
+            Redactores
+          </NavLink>
+
+          <NavLink
+            to="/admin"
+            end
+            className={({ isActive }) => (isActive ? "is-active" : "")}
+          >
             Noticias
           </NavLink>
-          <NavLink to="/admin/nueva-noticia" className={({ isActive }) => isActive ? 'is-active' : ''}>
-            Nueva noticia
-          </NavLink>
-          <button onClick={handleLogout} className="admin-logout">Cerrar sesión</button>
+
+          <button onClick={handleLogout} className="admin-logout">
+            Cerrar sesión
+          </button>
         </nav>
       </header>
       <main className="admin-main">
         <Outlet />
       </main>
     </div>
-  )
+  );
 }

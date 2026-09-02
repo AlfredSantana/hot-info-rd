@@ -5,14 +5,12 @@ import { supabase } from "../lib/supabaseClient.js";
 import { formatArticleContent } from "../lib/formatContent.js";
 import { formatDate } from "../lib/formatDate.js";
 import { useSession } from "../lib/useSession.js";
-
 import SEO from "../components/SEO.jsx";
 import ShareButtons from "../components/ShareButtons.jsx";
 import RelatedArticles from "../components/RelatedArticles.jsx";
 import SourcesDisplay from "../components/SourcesDisplay.jsx";
 import CategoryBadge from "../components/CategoryBadge.jsx";
 import PromoSlot from "../components/PromoSlot.jsx";
-
 import "./ArticlePage.css";
 
 const PROMO_HOME = [
@@ -82,7 +80,7 @@ export default function ArticlePage() {
       const { data, error } = await supabase
         .from("noticias")
         .select(
-          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url), noticia_tags(categoria_id, categorias(nombre, slug, color))",
+          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url, bio), noticia_tags(categoria_id, categorias(nombre, slug, color))",
         )
         .eq("slug", slug)
         .eq("published", true)
@@ -235,20 +233,51 @@ export default function ArticlePage() {
 
                   {copied ? "✓ Copiado" : "Copiar link"}
                 </button>
+
+                <Link
+                  to="/admin/nueva-noticia"
+                  className="article-toolbar-btn article-toolbar-btn-accent article-toolbar-btn-accent-new"
+                  aria-label="Crear nueva noticia"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                  Nueva noticia
+                </Link>
               </div>
             )}
 
             {/* Autor y fecha */}
-            <div className="article-meta">
-              {article.autores?.nombre && (
-                <span>Por {article.autores.nombre}</span>
+            <div className="article-author-block">
+              {article.autores?.avatar_url && (
+                <img
+                  src={article.autores.avatar_url}
+                  alt={article.autores.nombre}
+                  className="article-author-avatar"
+                />
               )}
-
-              {article.autores?.nombre && formattedDate && (
-                <span className="article-meta-dot">·</span>
-              )}
-
-              {formattedDate && <span>{formattedDate}</span>}
+              <div className="article-author-info">
+                <div className="article-meta">
+                  {article.autores?.nombre && (
+                    <span>Por {article.autores.nombre}</span>
+                  )}
+                  {article.autores?.nombre && formattedDate && (
+                    <span className="article-meta-dot">·</span>
+                  )}
+                  {formattedDate && <span>{formattedDate}</span>}
+                </div>
+                {article.autores?.bio && (
+                  <p className="article-author-bio">{article.autores.bio}</p>
+                )}
+              </div>
             </div>
 
             <div className="promo-slot2">

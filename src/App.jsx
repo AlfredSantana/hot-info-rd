@@ -13,6 +13,7 @@ import EditArticle from "./pages/admin/EditArticle.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import TermsOfUse from "./pages/TermsOfUse.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import Authors from "./pages/admin/Authors.jsx";
 
 export default function App() {
   return (
@@ -27,8 +28,18 @@ export default function App() {
           <Route path="/terminos-de-uso" element={<TermsOfUse />} />
           <Route path="/buscar" element={<SearchPage />} />
         </Route>
-
+        <Route
+          path="/admin/redactores"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Authors />} />
+        </Route>
         <Route path="/admin/login" element={<AdminLogin />} />
+
         <Route
           path="/admin"
           element={

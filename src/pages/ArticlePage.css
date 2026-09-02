@@ -1,4 +1,4 @@
-.article-loading {
+admin-btn.article-loading {
   padding: 3rem 1rem;
   text-align: center;
   color: var(--color-text-muted);
@@ -117,11 +117,45 @@
 }
 
 .article-toolbar-btn-accent {
-  background: var(--color-accent);
+  background: var(--color-accent-secondary);
 }
 
 .article-toolbar-btn-accent:hover {
+  background: #132a76;
+}
+
+.article-toolbar-btn-accent-new {
+  background: var(--color-accent);
+}
+
+.article-toolbar-btn-accent-new:hover {
   background: var(--color-accent-dark);
+}
+
+.article-author-block {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.article-author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.article-author-info {
+  min-width: 0;
+}
+
+.article-author-bio {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin: 0.15rem 0 0;
+  line-height: 1.4;
 }
 
 @media (min-width: 768px) {

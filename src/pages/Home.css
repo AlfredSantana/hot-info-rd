@@ -17,6 +17,37 @@
   gap: 1rem;
 }
 
+.home-new-article-btn {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  white-space: nowrap;
+  background: var(--color-accent);
+}
+
+.home-new-article-btn:hover {
+  background: var(--color-accent-dark);
+}
+
+.home-new-article-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
 @media (min-width: 640px) {
   .home-grid {
     grid-template-columns: repeat(2, 1fr);

@@ -2,20 +2,39 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient.js";
 import ArticleCard from "../components/ArticleCard.jsx";
+import PromoSlot from "../components/PromoSlot.jsx";
 import SEO from "../components/SEO.jsx";
 import "./CategoryPage.css";
 
 const LABELS = {
   farandula: "Farándula",
   entretenimiento: "Entretenimiento",
+  musica: "Música",
   virales: "Virales",
   actualidad: "Actualidad",
+  nacionales: "Nacionales",
+  internacionales: "Internacionales",
   politica: "Política",
   salud: "Salud",
   tecnologia: "Tecnología",
   deportes: "Deportes",
-  musica: "Música",
 };
+
+const PROMO_CATEGORY_TOP = [
+  {
+    image: "/promo/banner-redes-1600x686px.mp4",
+    link: "https://instagram.com/hotinford",
+    alt: "Síguenos en Instagram y Facebook",
+  },
+];
+
+const PROMO_CATEGORY_MID = [
+  {
+    image: "/promo/banner-redes-1200x900px.mp4",
+    link: "https://instagram.com/hotinford",
+    alt: "Síguenos en Instagram y Facebook",
+  },
+];
 
 function mapNoticia(n) {
   return {
@@ -40,7 +59,6 @@ export default function CategoryPage() {
     setLoading(true);
 
     async function fetchArticles() {
-      // 1. Noticias donde esta categoría es la principal
       const primaryQuery = supabase
         .from("noticias")
         .select(
@@ -49,7 +67,6 @@ export default function CategoryPage() {
         .eq("published", true)
         .eq("categorias.slug", category);
 
-      // 2. Noticias donde esta categoría es un tag secundario
       const tagQuery = supabase
         .from("noticia_tags")
         .select(
@@ -65,7 +82,6 @@ export default function CategoryPage() {
       const primaryArticles = primaryRes.data || [];
       const tagArticles = (tagRes.data || []).map((row) => row.noticias);
 
-      // Fusiona sin duplicados (por id)
       const seen = new Set();
       const combined = [...primaryArticles, ...tagArticles].filter((n) => {
         if (seen.has(n.id)) return false;
@@ -88,6 +104,11 @@ export default function CategoryPage() {
   }, [category]);
 
   const label = LABELS[category] ?? category;
+  const accentColor = articles[0]?.categoryColor || "var(--color-accent)";
+
+  // Inserta el anuncio intermedio después del 4to artículo
+  const firstBatch = articles.slice(0, 4);
+  const restBatch = articles.slice(4);
 
   return (
     <>
@@ -98,16 +119,57 @@ export default function CategoryPage() {
         url={`${window.location.origin}/categoria/${category}`}
         type="website"
       />
-      <h1 className="category-title">{label}</h1>
-      <section className="home-grid">
-        {loading && <p>Cargando…</p>}
-        {!loading && articles.length === 0 && (
-          <p>No hay artículos en esta categoría.</p>
+
+      <header className="category-header" style={{ "--accent": accentColor }}>
+        <h1 className="category-title">{label}</h1>
+        {!loading && (
+          <p className="category-count">
+            {articles.length}{" "}
+            {articles.length === 1
+              ? "noticia encontrada"
+              : "noticias encontradas"}
+          </p>
         )}
-        {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
-        ))}
-      </section>
+      </header>
+
+      <div className="category-promo-wrapper">
+        <PromoSlot items={PROMO_CATEGORY_TOP} aspectRatio="1600 / 686" />
+      </div>
+
+      <div className="category-content">
+        {loading && <p className="category-status">Cargando…</p>}
+
+        {!loading && articles.length === 0 && (
+          <p className="category-status">No hay artículos en esta categoría.</p>
+        )}
+
+        {!loading && articles.length > 0 && (
+          <>
+            <section className="home-grid">
+              {firstBatch.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </section>
+
+            {restBatch.length > 0 && (
+              <>
+                <div className="category-promo-wrapper category-promo-mid">
+                  <PromoSlot
+                    items={PROMO_CATEGORY_MID}
+                    aspectRatio="1200 / 900"
+                  />
+                </div>
+
+                <section className="home-grid">
+                  {restBatch.map((article) => (
+                    <ArticleCard key={article.id} article={article} />
+                  ))}
+                </section>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 }

@@ -7,6 +7,8 @@ const CATEGORIES = [
   { slug: "musica", label: "Música" },
   { slug: "virales", label: "Virales" },
   { slug: "actualidad", label: "Actualidad" },
+  { slug: "nacionales", label: "Nacionales" },
+  { slug: "internacionales", label: "Internacionales" },
   { slug: "politica", label: "Política" },
   { slug: "salud", label: "Salud" },
   { slug: "tecnologia", label: "Tecnología" },

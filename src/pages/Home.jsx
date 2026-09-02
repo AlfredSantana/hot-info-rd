@@ -7,6 +7,8 @@ import CategorySection from "../components/CategorySection.jsx";
 import SEO from "../components/SEO.jsx";
 import "./Home.css";
 import PromoSlot from "../components/PromoSlot.jsx";
+import { Link } from "react-router-dom";
+import { useSession } from "../lib/useSession.js";
 
 const PROMO_HOME = [
   {
@@ -22,6 +24,8 @@ const SECTIONS = [
   { slug: "musica", label: "Música" },
   { slug: "virales", label: "Virales" },
   { slug: "actualidad", label: "Actualidad" },
+  { slug: "nacionales", label: "Nacionales" },
+  { slug: "internacionales", label: "Internacionales" },
   { slug: "politica", label: "Política" },
   { slug: "salud", label: "Salud" },
   { slug: "tecnologia", label: "Tecnología" },
@@ -47,6 +51,7 @@ export default function Home() {
   const [popular, setPopular] = useState([]);
   const [sections, setSections] = useState({});
   const [loading, setLoading] = useState(true);
+  const session = useSession();
 
   useEffect(() => {
     let active = true;
@@ -141,6 +146,27 @@ export default function Home() {
           articles={sections[s.slug]}
         />
       ))}
+
+      {session && (
+        <Link
+          to="/admin/nueva-noticia"
+          className="home-new-article-btn"
+          aria-label="Crear nueva noticia"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Nueva noticia
+        </Link>
+      )}
     </>
   );
 }

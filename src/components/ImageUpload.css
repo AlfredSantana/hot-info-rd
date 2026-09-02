@@ -66,3 +66,11 @@
 .image-upload-alt input {
   margin-top: 0.5rem;
 }
+
+.image-upload-preview.is-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  align-self: center;
+}
