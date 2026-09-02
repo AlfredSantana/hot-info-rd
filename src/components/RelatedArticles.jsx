@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient.js";
 import ArticleCard from "./ArticleCard.jsx";
 import "./RelatedArticles.css";
+import { Link } from "react-router-dom";
 
 function mapNoticia(n) {
   return {
@@ -20,6 +21,7 @@ export default function RelatedArticles({
   categoriaId,
   tagIds = [],
   currentId,
+  compact = false,
 }) {
   const [related, setRelated] = useState([]);
 
@@ -75,12 +77,25 @@ export default function RelatedArticles({
   if (related.length === 0) return null;
 
   return (
-    <section className="related-articles">
+    <section
+      className={`related-articles ${compact ? "related-articles-compact" : ""}`}
+    >
       <h2>Te puede interesar</h2>
-      <div className="related-grid">
-        {related.map((article) => (
-          <ArticleCard key={article.id} article={article} />
-        ))}
+      <div className={compact ? "related-list-compact" : "related-grid"}>
+        {related.map((article) =>
+          compact ? (
+            <Link
+              key={article.id}
+              to={`/noticia/${article.slug}`}
+              className="related-compact-item"
+            >
+              <img src={article.cover_image} alt={article.title} />
+              <span>{article.title}</span>
+            </Link>
+          ) : (
+            <ArticleCard key={article.id} article={article} />
+          ),
+        )}
       </div>
     </section>
   );

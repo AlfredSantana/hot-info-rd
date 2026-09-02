@@ -42,3 +42,9 @@
   opacity: 1;
   color: #ffdada;
 }
+
+@media (max-width: 640px) {
+  .breaking-label {
+    padding: 0.7rem 0.75rem;
+  }
+}

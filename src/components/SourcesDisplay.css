@@ -177,8 +177,15 @@
   border: none;
 }
 
-@media (min-width: 640px) {
-  .source-slide {
-    width: 320px;
+@media (max-width: 600px) {
+  .sources-display {
+    padding: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .sources-display {
+    max-width: 760px;
+    margin: var(--space-3) auto;
   }
 }
