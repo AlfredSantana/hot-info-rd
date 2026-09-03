@@ -278,7 +278,7 @@ admin-btn.article-loading {
    ========================================== */
 .mobile-only-ad {
   display: block;
-  margin: 1.5rem 0; /* Da un respiro entre la imagen y el texto */
+  margin: 1.5rem 0; 
 }
 
 .desktop-only-ad {
@@ -293,4 +293,24 @@ admin-btn.article-loading {
   .desktop-only-ad {
     display: block;
   }
+}
+
+/* Limpieza universal para Embeds (Facebook, Twitter, TikTok, YouTube) */
+.article-content iframe,
+.article-content .fb-post,
+.article-content .fb-video,
+.article-content .twitter-tweet,
+.article-content blockquote.tiktok-embed {
+  max-width: 100% !important;
+  margin: 1.5rem auto !important;
+  display: block !important;
+  border: none !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden !important;
+}
+
+/* Ajuste específico para que Facebook no se vea desproporcionado */
+.article-content iframe[src*="facebook.com"] {
+  max-width: 500px !important;
+  width: 100% !important;
 }

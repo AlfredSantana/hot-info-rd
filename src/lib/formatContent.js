@@ -8,13 +8,17 @@ export function formatArticleContent(content) {
     const trimmed = p.trim();
     if (!trimmed) return "";
 
-    // Si el bloque de texto empieza y termina con etiquetas HTML (como el de Instagram), 
-    // lo respetamos y NO lo metemos dentro de un <p>
-    if (trimmed.startsWith('<') && trimmed.endsWith('>')) {
-      return trimmed;
+    // Solo evitamos crear el párrafo si es un código complejo (Instagram, YouTube, etc)
+    const isEmbed = trimmed.startsWith('<blockquote') || 
+                    trimmed.startsWith('<iframe') || 
+                    trimmed.startsWith('<div') || 
+                    trimmed.startsWith('<script');
+
+    if (isEmbed) {
+      return trimmed; // Lo deja intacto (para Instagram)
     }
     
-    // Si es texto normal, lo envolvemos en un párrafo y respetamos los saltos simples
+    // Si es texto normal, negrita <b> o cursiva <i>, lo envuelve en <p> y le da su espaciado
     return `<p>${trimmed.replace(/\n/g, '<br/>')}</p>`;
   });
 

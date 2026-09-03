@@ -10,19 +10,26 @@ import PromoSlot from "../components/PromoSlot.jsx";
 import { Link } from "react-router-dom";
 import { useSession } from "../lib/useSession.js";
 
-const PROMO_HOME = [
+const AD_UNIVERSAL = [
+  {
+    image: "/promo/banner-redes-1600x200px.mp4",
+    link: "mailto:hotinfo@gmail.com",
+    alt: "Espacios disponibles para publicidad, contáctanos en hotinfo@gmail.com",
+  },
+];
+const AD_FOOTER_HOME = [
   {
     image: "/promo/banner-redes-1600x686px.mp4",
     link: "https://instagram.com/hotinford",
-    alt: "Síguenos en Instagram y Facebook",
+    alt: "siguenos en nuestras redes sociales @hotinford",
   },
 ];
 
-const PROMO_ARTICLE = [
+const AD_MOBILE_HOME = [
   {
-    image: "/promo/banner-redes-1000x1250px.mp4",
+    image: "/promo/banner-redes-1456x180px.mp4",
     link: "https://instagram.com/hotinford",
-    alt: "Síguenos en Instagram y Facebook",
+    alt: "Noticias al instante",
   },
 ];
 
@@ -132,9 +139,9 @@ export default function Home() {
         type="website"
       />
 
-      <FeaturedCarousel articles={articles.slice(0, 5)} />
+      <PromoSlot items={AD_MOBILE_HOME} aspectRatio="728 / 90" />
 
-      <PromoSlot items={PROMO_HOME} aspectRatio="1600 / 686" />
+      <FeaturedCarousel articles={articles.slice(0, 5)} />
 
       <div className="home-layout">
         <section className="home-grid">
@@ -143,22 +150,41 @@ export default function Home() {
           ))}
         </section>
 
+        {/* Anuncio exclusivo para celulares antes del Sidebar */}
+        <div
+          className="mobile-only-ad home-mobile-ad"
+          style={{ width: "100%" }}
+        >
+          <PromoSlot items={AD_UNIVERSAL} aspectRatio="800 / 100" />
+        </div>
+
         <Sidebar articles={popular} />
       </div>
 
-      {SECTIONS.map((s) => (
-        <CategorySection
-          key={s.slug}
-          title={s.label}
-          slug={s.slug}
-          articles={sections[s.slug]}
-        />
+      {SECTIONS.map((s, index) => (
+        <div key={s.slug}>
+          <CategorySection
+            title={s.label}
+            slug={s.slug}
+            articles={sections[s.slug]}
+          />
+
+          {/* Inserta un anuncio alargado (estilo barra) después de la 2da categoría */}
+          {index === 1 && (
+            <div
+              style={{
+                maxWidth: "1200px",
+                margin: "2rem auto",
+                padding: "0 1rem",
+              }}
+            >
+              <PromoSlot items={AD_FOOTER_HOME} aspectRatio="1600 / 686" />
+            </div>
+          )}
+        </div>
       ))}
 
-      {/* Nuevo anuncio al fondo del inicio */}
-      <div className="home-bottom-promo">
-        <PromoSlot items={PROMO_ARTICLE} aspectRatio="1000 / 1250" />
-      </div>
+      {/* Eliminamos el div "home-bottom-promo" gigante que estaba aquí */}
 
       {session && (
         <Link

@@ -7,11 +7,10 @@ import PromoSlot from "../components/PromoSlot.jsx";
 import "./AuthorProfile.css";
 import { useSession } from "../lib/useSession.js";
 
-const PROMO_AUTHOR = [
+const AD_AUTHOR = [
   {
-    image: "/promo/banner-redes-1600x686px.mp4",
+    image: "/promo/banner-redes-800x100.mp4",
     link: "https://instagram.com/hotinford",
-    alt: "Síguenos en Instagram y Facebook",
   },
 ];
 
@@ -76,6 +75,21 @@ export default function AuthorProfile() {
 
   return (
     <div className="author-container">
+      {/* Botón de volver */}
+      <Link
+        to="/"
+        style={{
+          display: "inline-block",
+          marginBottom: "0.5rem",
+          color: "var(--color-text-muted)",
+          textDecoration: "none",
+          fontSize: "0.9rem",
+          fontWeight: "600",
+        }}
+      >
+        ← Volver al inicio
+      </Link>
+
       {/* Cabecera del perfil estilo tarjeta */}
       <div className="author-header-card">
         {author.avatar_url ? (
@@ -101,7 +115,7 @@ export default function AuthorProfile() {
 
       {/* Espacio para anuncio promocional */}
       <div className="author-promo-wrapper">
-        <PromoSlot items={PROMO_AUTHOR} aspectRatio="1600 / 686" />
+        <PromoSlot items={AD_AUTHOR} aspectRatio="800 / 100" />
       </div>
 
       {/* Lista de artículos */}

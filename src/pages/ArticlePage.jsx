@@ -13,27 +13,28 @@ import CategoryBadge from "../components/CategoryBadge.jsx";
 import PromoSlot from "../components/PromoSlot.jsx";
 import "./ArticlePage.css";
 
-const PROMO_HOME = [
+const AD_MOBILE_TOP = [
   {
-    image: "/promo/banner-redes-1200x900px.mp4",
+    image: "/promo/banner-redes-960x300px.mp4",
     link: "https://instagram.com/hotinford",
-    alt: "Síguenos en Instagram y Facebook",
   },
 ];
-
-const PROMO_HOME2 = [
+const AD_DESKTOP_TOP = [
   {
-    image: "/promo/banner-redes-1600x686px.mp4",
+    image: "/promo/banner-redes-728x90.mp4",
     link: "https://instagram.com/hotinford",
-    alt: "Síguenos en Instagram y Facebook",
   },
 ];
-
-const PROMO_ARTICLE = [
+const AD_SIDEBAR = [
   {
     image: "/promo/banner-redes-1000x1250px.mp4",
     link: "https://instagram.com/hotinford",
-    alt: "Síguenos en Instagram y Facebook",
+  },
+];
+const AD_FOOTER = [
+  {
+    image: "/promo/banner-redes-1600x686px.mp4",
+    link: "https://instagram.com/hotinford",
   },
 ];
 
@@ -247,11 +248,6 @@ export default function ArticlePage() {
               />
             )}
 
-            {/* ANUNCIO ESTRATÉGICO (SOLO MÓVIL): Aparece justo antes de leer */}
-            <div className="mobile-only-ad">
-              <PromoSlot items={PROMO_HOME2} aspectRatio="1600 / 686" />
-            </div>
-
             {/* 5. Herramientas de administrador */}
             {session && (
               <div className="article-admin-toolbar">
@@ -274,7 +270,6 @@ export default function ArticlePage() {
                   </svg>
                   Editar
                 </Link>
-
                 <button
                   type="button"
                   onClick={copyRedactorLink}
@@ -295,7 +290,6 @@ export default function ArticlePage() {
                   </svg>
                   {copied ? "Copiado" : "Copiar link"}
                 </button>
-
                 <Link
                   to="/admin/nueva-noticia"
                   className="article-toolbar-btn article-toolbar-btn-accent article-toolbar-btn-accent-new"
@@ -317,40 +311,63 @@ export default function ArticlePage() {
               </div>
             )}
 
-            {/* 6. Contenido principal */}
-            <div
-              className="article-content"
-              dangerouslySetInnerHTML={{
-                __html: formatArticleContent(article.contenido),
-              }}
-            />
+            {/* 6. Contenido principal con anuncios intercalados */}
+            {(() => {
+              const htmlContent = formatArticleContent(article.contenido);
+              const paragraphs = htmlContent.split("</p>");
 
-            {/* 7. Fuentes Originales */}
-            <SourcesDisplay sources={article.fuentes} />
+              if (paragraphs.length <= 3) {
+                return (
+                  <div
+                    className="article-content"
+                    dangerouslySetInnerHTML={{ __html: htmlContent }}
+                  />
+                );
+              }
 
-            {/* 8. Botones de Compartir */}
+              const cutIndex = 2;
+              const part1 =
+                paragraphs.slice(0, cutIndex + 1).join("</p>") + "</p>";
+              const part2 = paragraphs.slice(cutIndex + 1).join("</p>");
+
+              return (
+                <>
+                  <div
+                    className="article-content"
+                    style={{ marginTop: "1.5rem" }}
+                    dangerouslySetInnerHTML={{ __html: part1 }}
+                  />
+
+                  {/* Anuncios incrustados condicionalmente */}
+                  <div className="mobile-only-ad">
+                    <PromoSlot items={AD_MOBILE_TOP} aspectRatio="320 / 100" />
+                  </div>
+                  <div className="desktop-only-ad" style={{ margin: "2rem 0" }}>
+                    <PromoSlot items={AD_DESKTOP_TOP} aspectRatio="728 / 90" />
+                  </div>
+
+                  <div
+                    className="article-content"
+                    style={{ marginTop: "0" }}
+                    dangerouslySetInnerHTML={{ __html: part2 }}
+                  />
+                </>
+              );
+            })()}
+
+            {/* 7. Botones de Compartir */}
             <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
               <ShareButtons url={url} title={article.titulo} />
             </div>
 
-            {/* 9. Publicidad final de pie de artículo */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1.5rem",
-                marginBottom: "2rem",
-              }}
-            >
-              {/* Este banner se esconde en móvil (porque ya lo mostramos arriba) pero se ve en Desktop */}
-              <div className="desktop-only-ad">
-                <PromoSlot items={PROMO_HOME2} aspectRatio="1600 / 686" />
-              </div>
-
-              {/* Este banner siempre aparece al final, sin importar el dispositivo */}
-              <PromoSlot items={PROMO_HOME} aspectRatio="1200 / 900" />
+            {/* 8. Publicidad final de pie de artículo */}
+            <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+              <PromoSlot items={AD_FOOTER} aspectRatio="1600 / 686" />
             </div>
           </article>
+
+          {/* 9. Fuentes Originales */}
+          <SourcesDisplay sources={article.fuentes} />
         </main>
 
         {/* ─────────────────────────────────────
@@ -358,8 +375,8 @@ export default function ArticlePage() {
         ───────────────────────────────────── */}
 
         <aside className="article-sidebar">
-          {/* Banner vertical */}
-          <PromoSlot items={PROMO_ARTICLE} aspectRatio="1000 / 1250" />
+          {/* Banner vertical de Sidebar */}
+          <PromoSlot items={AD_SIDEBAR} aspectRatio="1000 / 1250" />
 
           {/* Noticias relacionadas */}
           <RelatedArticles

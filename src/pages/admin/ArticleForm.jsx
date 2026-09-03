@@ -43,7 +43,6 @@ export default function ArticleForm({ articleId }) {
   const [status, setStatus] = useState(null);
   const [loadingData, setLoadingData] = useState(isEditing);
   const [deleteTarget, setDeleteTarget] = useState(null);
-  const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
     supabase
@@ -122,20 +121,16 @@ export default function ArticleForm({ articleId }) {
     const openTag = `<${tag}>`;
     const closeTag = `</${tag}>`;
 
-    // Envuelve el texto seleccionado (o inserta etiquetas vacías)
     handleChange("contenido", before + openTag + selected + closeTag + after);
 
-    // Devuelve el foco y pone el cursor en el lugar perfecto
     setTimeout(() => {
       textarea.focus();
       if (selected) {
-        // Selecciona el texto junto con sus nuevas etiquetas
         textarea.setSelectionRange(
           start,
           start + openTag.length + selected.length + closeTag.length,
         );
       } else {
-        // Pone el cursor en el medio de las etiquetas para que escribas
         textarea.setSelectionRange(
           start + openTag.length,
           start + openTag.length,
@@ -144,85 +139,7 @@ export default function ArticleForm({ articleId }) {
     }, 0);
   }
 
-  function requestDelete() {
-    setDeleteTarget(articleId);
-  }
-
-  async function confirmDelete() {
-    const { error } = await supabase
-      .from("noticias")
-      .delete()
-      .eq("id", deleteTarget);
-
-    setDeleteTarget(null);
-
-    if (error) {
-      console.error(error);
-      alert("No se pudo eliminar: " + error.message);
-      return;
-    }
-
-    navigate("/admin");
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setStatus("saving");
-
-    const payload = {
-      titulo: form.titulo,
-      slug: form.slug,
-      cover_image: form.cover_image,
-      excerpt: form.excerpt,
-      contenido: form.contenido,
-      categoria_id: form.categoria_id,
-      autor_id: form.autor_id || null,
-      fuentes: form.fuentes,
-      published_at: form.published_at,
-      published: form.published,
-    };
-
-    let savedId = articleId;
-
-    if (isEditing) {
-      const { error } = await supabase
-        .from("noticias")
-        .update(payload)
-        .eq("id", articleId);
-      if (error) {
-        console.error(error);
-        setStatus("error");
-        return;
-      }
-    } else {
-      const { data, error } = await supabase
-        .from("noticias")
-        .insert(payload)
-        .select("id")
-        .single();
-      if (error) {
-        console.error(error);
-        setStatus("error");
-        return;
-      }
-      savedId = data.id;
-    }
-
-    // Sincroniza tags: borra los anteriores y guarda los actuales
-    await supabase.from("noticia_tags").delete().eq("noticia_id", savedId);
-    if (form.tags.length > 0) {
-      await supabase.from("noticia_tags").insert(
-        form.tags.map((categoria_id) => ({
-          noticia_id: savedId,
-          categoria_id,
-        })),
-      );
-    }
-    navigate(`/noticia/${form.slug}`);
-  }
-
   function handleKeyDown(e) {
-    // Verifica si el usuario presionó Ctrl (Windows) o Cmd (Mac)
     if (e.ctrlKey || e.metaKey) {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -239,6 +156,85 @@ export default function ArticleForm({ articleId }) {
       }
     }
   }
+
+  // --- ESTAS SON LAS FUNCIONES QUE SE HABÍAN BORRADO ---
+  async function handleSubmit(e) {
+    if (e) e.preventDefault();
+    setStatus("saving");
+
+    const payload = {
+      titulo: form.titulo,
+      slug: form.slug,
+      cover_image: form.cover_image,
+      excerpt: form.excerpt,
+      contenido: form.contenido,
+      categoria_id: form.categoria_id,
+      autor_id: form.autor_id || null,
+      fuentes: form.fuentes,
+      published_at: form.published_at,
+      published: form.published,
+    };
+
+    let currentArticleId = articleId;
+
+    if (isEditing) {
+      const { error } = await supabase
+        .from("noticias")
+        .update(payload)
+        .eq("id", articleId);
+      if (error) {
+        setStatus("error");
+        return;
+      }
+    } else {
+      const { data, error } = await supabase
+        .from("noticias")
+        .insert(payload)
+        .select()
+        .single();
+      if (error) {
+        setStatus("error");
+        return;
+      }
+      currentArticleId = data.id;
+    }
+
+    await supabase
+      .from("noticia_tags")
+      .delete()
+      .eq("noticia_id", currentArticleId);
+
+    if (form.tags.length > 0) {
+      const tagsPayload = form.tags.map((tagId) => ({
+        noticia_id: currentArticleId,
+        categoria_id: tagId,
+      }));
+      await supabase.from("noticia_tags").insert(tagsPayload);
+    }
+
+    setStatus("success");
+    navigate(`/noticia/${payload.slug}`);
+  }
+
+  function requestDelete() {
+    setDeleteTarget(articleId);
+  }
+
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setStatus("saving");
+    const { error } = await supabase
+      .from("noticias")
+      .delete()
+      .eq("id", deleteTarget);
+    if (!error) {
+      navigate("/admin");
+    } else {
+      setStatus("error");
+      setDeleteTarget(null);
+    }
+  }
+  // -----------------------------------------------------
 
   if (loadingData) return <p>Cargando noticia…</p>;
 
@@ -264,7 +260,9 @@ export default function ArticleForm({ articleId }) {
             <input
               type="text"
               value={form.titulo}
-              onChange={(e) => handleChange("titulo", e.target.value)}
+              onChange={(e) =>
+                handleChange("titulo", e.target.value.toUpperCase())
+              }
               autoFocus
               required
             />
@@ -280,10 +278,19 @@ export default function ArticleForm({ articleId }) {
             />
           </label>
 
-          <div
-            className={`admin-editor-container ${isMaximized ? "is-maximized" : ""}`}
-          >
-            {!isMaximized && <label>Contenido</label>}
+          {/* EDITOR SIN ETIQUETA LABEL PARA EVITAR BUG DE SELECCIÓN */}
+          <div className="admin-editor-container">
+            <span
+              style={{
+                fontSize: "0.85rem",
+                color: "var(--color-text-muted)",
+                marginBottom: "0.4rem",
+                fontWeight: "600",
+                display: "block",
+              }}
+            >
+              Contenido (Usa Ctrl+B, Ctrl+I, Ctrl+U)
+            </span>
 
             <div className="admin-editor-toolbar">
               <div className="admin-editor-toolbar-group">
@@ -312,37 +319,6 @@ export default function ArticleForm({ articleId }) {
                   U
                 </button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => setIsMaximized(!isMaximized)}
-                className="admin-editor-maximize"
-                title={isMaximized ? "Minimizar" : "Pantalla completa"}
-              >
-                {isMaximized ? (
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="16"
-                    height="16"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  >
-                    <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
-                  </svg>
-                ) : (
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="16"
-                    height="16"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  >
-                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-                  </svg>
-                )}
-              </button>
             </div>
 
             <textarea
@@ -350,7 +326,7 @@ export default function ArticleForm({ articleId }) {
               className="admin-textarea-content"
               value={form.contenido}
               onChange={(e) => handleChange("contenido", e.target.value)}
-              placeholder="Escribe tu noticia aquí... (Deja una línea en blanco antes y después de pegar un código de Instagram)"
+              placeholder="Escribe tu noticia o pega el código de Instagram aquí..."
               required
             />
           </div>
@@ -457,7 +433,7 @@ export default function ArticleForm({ articleId }) {
             <>
               <button
                 type="button"
-                onClick={() => navigate("/admin")}
+                onClick={() => navigate(`/noticia/${form.slug}`)}
                 className="admin-btn-secondary"
               >
                 Cancelar

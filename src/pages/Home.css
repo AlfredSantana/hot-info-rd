@@ -66,3 +66,8 @@
     padding: 1.5rem;
   }
 }
+
+/* Reduce los espacios del anuncio móvil específicamente en el Home */
+.home-mobile-ad {
+  margin: -1rem 0 !important;
+}

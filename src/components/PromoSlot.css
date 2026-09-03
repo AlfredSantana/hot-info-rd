@@ -2,10 +2,13 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  /* Hereda los márgenes que antes tenía el slot directamente */
   width: calc(100% - 2rem);
   max-width: 1200px;
-  margin: 1.5rem auto;
+  margin: 1rem auto;
+}
+
+.promo-wrapper div {
+  margin: -0.1rem auto;
 }
 
 .promo-label {

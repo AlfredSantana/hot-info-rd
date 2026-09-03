@@ -803,3 +803,10 @@ img, video, canvas {
     box-shadow: var(--shadow-sm);
   }
 }
+
+.ql-editor {
+  min-height: 300px;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}

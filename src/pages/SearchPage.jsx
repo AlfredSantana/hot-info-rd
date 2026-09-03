@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabaseClient.js";
 import ArticleCard from "../components/ArticleCard.jsx";
 import SEO from "../components/SEO.jsx";
 import "./SearchPage.css";
+import PromoSlot from "../components/PromoSlot.jsx";
 
 const CATEGORIES = [
   { slug: "farandula", label: "Farándula" },
@@ -15,6 +16,14 @@ const CATEGORIES = [
   { slug: "tecnologia", label: "Tecnología" },
   { slug: "deportes", label: "Deportes" },
   { slug: "musica", label: "Música" },
+];
+
+const AD_SEARCH = [
+  {
+    image: "/promo/banner-redes-1600x200px.mp4",
+    link: "mailto:hotinfo@gmail.com",
+    alt: "Espacios disponibles para publicidad, contáctanos en hotinfo@gmail.com",
+  },
 ];
 
 function mapNoticia(n) {
@@ -134,6 +143,17 @@ export default function SearchPage() {
         {!loading && filtered.length === 0 && (
           <p>No se encontraron noticias.</p>
         )}
+
+        {/* Anuncio de Búsqueda */}
+        <div
+          style={{
+            marginTop: "-1.5rem",
+            marginBottom: "1.5rem",
+            maxWidth: "800px",
+          }}
+        >
+          <PromoSlot items={AD_SEARCH} aspectRatio="800 / 100" />
+        </div>
 
         <div className="search-grid">
           {filtered.map((article) => (
