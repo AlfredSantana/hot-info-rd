@@ -48,6 +48,12 @@
   flex-shrink: 0;
 }
 
+.home-bottom-promo {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
 @media (min-width: 640px) {
   .home-grid {
     grid-template-columns: repeat(2, 1fr);

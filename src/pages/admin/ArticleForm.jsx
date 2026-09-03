@@ -43,6 +43,7 @@ export default function ArticleForm({ articleId }) {
   const [status, setStatus] = useState(null);
   const [loadingData, setLoadingData] = useState(isEditing);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
     supabase
@@ -104,6 +105,43 @@ export default function ArticleForm({ articleId }) {
       if (field === "titulo" && !slugEdited) next.slug = slugify(value);
       return next;
     });
+  }
+
+  function applyFormat(tag) {
+    const textarea = document.getElementById("admin-editor");
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = form.contenido;
+
+    const before = text.substring(0, start);
+    const selected = text.substring(start, end);
+    const after = text.substring(end, text.length);
+
+    const openTag = `<${tag}>`;
+    const closeTag = `</${tag}>`;
+
+    // Envuelve el texto seleccionado (o inserta etiquetas vacías)
+    handleChange("contenido", before + openTag + selected + closeTag + after);
+
+    // Devuelve el foco y pone el cursor en el lugar perfecto
+    setTimeout(() => {
+      textarea.focus();
+      if (selected) {
+        // Selecciona el texto junto con sus nuevas etiquetas
+        textarea.setSelectionRange(
+          start,
+          start + openTag.length + selected.length + closeTag.length,
+        );
+      } else {
+        // Pone el cursor en el medio de las etiquetas para que escribas
+        textarea.setSelectionRange(
+          start + openTag.length,
+          start + openTag.length,
+        );
+      }
+    }, 0);
   }
 
   function requestDelete() {
@@ -184,9 +222,21 @@ export default function ArticleForm({ articleId }) {
   }
 
   function handleKeyDown(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-      e.preventDefault();
-      handleSubmit(e);
+    // Verifica si el usuario presionó Ctrl (Windows) o Cmd (Mac)
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSubmit(e);
+      } else if (e.key.toLowerCase() === "b") {
+        e.preventDefault();
+        applyFormat("b");
+      } else if (e.key.toLowerCase() === "i") {
+        e.preventDefault();
+        applyFormat("i");
+      } else if (e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        applyFormat("u");
+      }
     }
   }
 
@@ -210,7 +260,7 @@ export default function ArticleForm({ articleId }) {
       <form className="admin-form" onSubmit={handleSubmit}>
         <section className="admin-section">
           <label>
-            Título
+            Título* (EN MAYÚSCULAS)
             <input
               type="text"
               value={form.titulo}
@@ -230,19 +280,83 @@ export default function ArticleForm({ articleId }) {
             />
           </label>
 
-          <label>
-            Contenido
+          <div
+            className={`admin-editor-container ${isMaximized ? "is-maximized" : ""}`}
+          >
+            {!isMaximized && <label>Contenido</label>}
+
+            <div className="admin-editor-toolbar">
+              <div className="admin-editor-toolbar-group">
+                <button
+                  type="button"
+                  onClick={() => applyFormat("b")}
+                  title="Negrita"
+                  style={{ fontWeight: "bold" }}
+                >
+                  B
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyFormat("i")}
+                  title="Cursiva"
+                  style={{ fontStyle: "italic", fontFamily: "serif" }}
+                >
+                  I
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyFormat("u")}
+                  title="Subrayado"
+                  style={{ textDecoration: "underline" }}
+                >
+                  U
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="admin-editor-maximize"
+                title={isMaximized ? "Minimizar" : "Pantalla completa"}
+              >
+                {isMaximized ? (
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                  >
+                    <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+                  </svg>
+                ) : (
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                  >
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                  </svg>
+                )}
+              </button>
+            </div>
+
             <textarea
+              id="admin-editor"
               className="admin-textarea-content"
               value={form.contenido}
               onChange={(e) => handleChange("contenido", e.target.value)}
-              placeholder="Admite HTML básico: <p>, <b>, <i>, <a>..."
+              placeholder="Escribe tu noticia aquí... (Deja una línea en blanco antes y después de pegar un código de Instagram)"
               required
             />
-          </label>
+          </div>
 
           <label>
-            Imagen principal
+            Imagen principal (Se recomienda 16:9)
             <ImageUpload
               value={form.cover_image}
               onChange={(url) => handleChange("cover_image", url)}

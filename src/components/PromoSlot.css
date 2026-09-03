@@ -1,8 +1,26 @@
-.promo-slot {
-  position: relative;
+.promo-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  /* Hereda los márgenes que antes tenía el slot directamente */
   width: calc(100% - 2rem);
   max-width: 1200px;
   margin: 1.5rem auto;
+}
+
+.promo-label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted, #888888);
+  text-align: right;
+  user-select: none;
+}
+
+.promo-slot {
+  position: relative;
+  width: 100%;
   border-radius: var(--radius);
   overflow: hidden;
   background: #f0f0f2;

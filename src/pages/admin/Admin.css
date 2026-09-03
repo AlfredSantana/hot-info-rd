@@ -1,16 +1,16 @@
 /* ==========================================
    1. BASE & LAYOUT
    ========================================== */
-.admin-layout,
-.admin-layout *,
-.admin-layout *::before,
-.admin-layout *::after {
-  box-sizing: border-box;
+*, 
+*::before, 
+*::after {
+  box-sizing: border-box !important;
 }
 
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
   max-width: 100%;
   overflow-x: hidden;
 }
@@ -25,10 +25,9 @@ html, body {
 
 .admin-main {
   padding: 1rem;
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  width: 100%;
-  overflow-x: hidden;
 }
 
 .admin-header {
@@ -351,6 +350,14 @@ img, video, canvas {
 
 .admin-form input,
 .admin-form select,
+.admin-form textarea,
+.admin-editor-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+.admin-form input,
+.admin-form select,
 .admin-form textarea {
   font-family: var(--font-sans);
   font-size: 0.95rem;
@@ -358,8 +365,6 @@ img, video, canvas {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text);
-  width: 100%;
-  max-width: 100%;
   background: var(--color-surface);
   transition: border-color 0.15s ease;
 }
@@ -656,6 +661,95 @@ img, video, canvas {
   gap: 0.75rem;
   flex-shrink: 0;
   align-items: center;
+}
+
+/* ==========================================
+   MINI EDITOR TOOLBAR & MAXIMIZE (REDISEÑADO)
+   ========================================== */
+.admin-editor-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #eaeaea);
+  border-bottom: none;
+  border-radius: var(--radius-sm, 6px) var(--radius-sm, 6px) 0 0;
+  padding: 0.4rem;
+}
+
+.admin-editor-toolbar-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.admin-editor-toolbar button {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: background 0.15s ease;
+}
+
+.admin-editor-toolbar button:hover {
+  background: var(--color-bg, #f5f5f5);
+  color: var(--color-accent);
+}
+
+.admin-editor-maximize {
+  color: var(--color-text-muted) !important;
+}
+
+.admin-editor-container .admin-textarea-content {
+  border-radius: 0 0 var(--radius-sm, 6px) var(--radius-sm, 6px);
+  margin: 0;
+}
+
+/* Modo Zen: Pantalla Completa Clara */
+.admin-editor-container.is-maximized {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-bg, #f4f4f5);
+  z-index: 9999;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-editor-container.is-maximized .admin-editor-toolbar {
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid var(--color-border, #eaeaea);
+  border-bottom: none;
+}
+
+.admin-editor-container.is-maximized .admin-textarea-content {
+  flex: 1;
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 1px solid var(--color-border, #eaeaea);
+  resize: none;
 }
 
 /* ==========================================

@@ -14,6 +14,7 @@ import SearchPage from "./pages/SearchPage.jsx";
 import TermsOfUse from "./pages/TermsOfUse.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import Authors from "./pages/admin/Authors.jsx";
+import AuthorProfile from "./pages/AuthorProfile.jsx";
 
 export default function App() {
   return (
@@ -28,6 +29,9 @@ export default function App() {
           <Route path="/terminos-de-uso" element={<TermsOfUse />} />
           <Route path="/buscar" element={<SearchPage />} />
         </Route>
+
+        <Route path="/autor/:slug" element={<AuthorProfile />} />
+
         <Route
           path="/admin/redactores"
           element={

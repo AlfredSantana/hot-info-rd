@@ -5,6 +5,19 @@ import "./Admin.css";
 
 const emptyForm = { id: null, nombre: "", bio: "", avatar_url: "" };
 
+const generarSlug = (texto) => {
+  if (!texto) return "";
+  return texto
+    .toString()
+    .toLowerCase()
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
+};
+
 export default function Authors() {
   const [autores, setAutores] = useState([]);
   const [form, setForm] = useState(emptyForm);
@@ -14,7 +27,7 @@ export default function Authors() {
   async function loadAutores() {
     const { data } = await supabase
       .from("autores")
-      .select("id, nombre, bio, avatar_url")
+      .select("id, nombre, bio, avatar_url, slug")
       .order("nombre");
     if (data) setAutores(data);
     setLoading(false);
@@ -44,6 +57,7 @@ export default function Authors() {
       nombre: form.nombre,
       bio: form.bio,
       avatar_url: form.avatar_url,
+      slug: generarSlug(form.nombre),
     };
 
     let error;
@@ -162,19 +176,64 @@ export default function Authors() {
       <div className="admin-authors-list">
         {autores.map((a) => (
           <div key={a.id} className="admin-author-card">
-            {a.avatar_url ? (
-              <img
-                src={a.avatar_url}
-                alt={a.nombre}
-                className="admin-author-avatar"
-              />
+            {/* FOTO: Clickeable si tiene slug */}
+            {a.slug ? (
+              <a
+                href={`/autor/${a.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "block", flexShrink: 0 }}
+                title="Ver perfil público"
+              >
+                {a.avatar_url ? (
+                  <img
+                    src={a.avatar_url}
+                    alt={a.nombre}
+                    className="admin-author-avatar"
+                  />
+                ) : (
+                  <div className="admin-author-avatar admin-author-avatar-empty" />
+                )}
+              </a>
             ) : (
-              <div className="admin-author-avatar admin-author-avatar-empty" />
+              <>
+                {a.avatar_url ? (
+                  <img
+                    src={a.avatar_url}
+                    alt={a.nombre}
+                    className="admin-author-avatar"
+                  />
+                ) : (
+                  <div className="admin-author-avatar admin-author-avatar-empty" />
+                )}
+              </>
             )}
+
+            {/* INFO: Nombre clickeable si tiene slug */}
             <div className="admin-author-info">
-              <p className="admin-author-name">{a.nombre}</p>
+              {a.slug ? (
+                <a
+                  href={`/autor/${a.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  title="Ver perfil público"
+                >
+                  {/* Cambiamos el subrayado por negrita (bold) */}
+                  <p
+                    className="admin-author-name"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    {a.nombre}
+                  </p>
+                </a>
+              ) : (
+                <p className="admin-author-name">{a.nombre}</p>
+              )}
               <p className="admin-author-bio">{a.bio}</p>
             </div>
+
+            {/* ACCIONES: Solo editar y eliminar */}
             <div className="admin-actions admin-author-actions">
               <a onClick={() => startEdit(a)} className="admin-clickable">
                 Editar

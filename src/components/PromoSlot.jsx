@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import "./PromoSlot.css";
 
 export default function PromoSlot({ items, aspectRatio = "21 / 9" }) {
@@ -43,26 +41,30 @@ export default function PromoSlot({ items, aspectRatio = "21 / 9" }) {
   );
 
   return (
-    <div className="promo-slot" style={{ aspectRatio }}>
-      {current.link ? (
-        current.link.startsWith("http") ? (
-          <a href={current.link} target="_blank" rel="noopener noreferrer">
-            {content}
-          </a>
-        ) : (
-          <Link to={current.link}>{content}</Link>
-        )
-      ) : (
-        content
-      )}
+    <div className="promo-wrapper">
+      <span className="promo-label">Anuncio</span>
 
-      {items.length > 1 && (
-        <div className="promo-slot-dots">
-          {items.map((_, i) => (
-            <span key={i} className={i === index ? "is-active" : ""} />
-          ))}
-        </div>
-      )}
+      <div className="promo-slot" style={{ aspectRatio }}>
+        {current.link ? (
+          current.link.startsWith("http") ? (
+            <a href={current.link} target="_blank" rel="noopener noreferrer">
+              {content}
+            </a>
+          ) : (
+            <Link to={current.link}>{content}</Link>
+          )
+        ) : (
+          content
+        )}
+
+        {items.length > 1 && (
+          <div className="promo-slot-dots">
+            {items.map((_, i) => (
+              <span key={i} className={i === index ? "is-active" : ""} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

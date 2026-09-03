@@ -80,7 +80,7 @@ export default function ArticlePage() {
       const { data, error } = await supabase
         .from("noticias")
         .select(
-          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url, bio), noticia_tags(categoria_id, categorias(nombre, slug, color))",
+          "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url, bio, slug), noticia_tags(categoria_id, categorias(nombre, slug, color))",
         )
         .eq("slug", slug)
         .eq("published", true)
@@ -106,24 +106,21 @@ export default function ArticlePage() {
   // Registrar visita
   // ─────────────────────────────────────────────
 
+  // ─────────────────────────────────────────────
+  // Procesar Embeds (Instagram, etc.)
+  // ─────────────────────────────────────────────
   useEffect(() => {
     if (!article) return;
 
-    const key = `viewed-${article.id}`;
-
-    if (sessionStorage.getItem(key)) return;
-
-    sessionStorage.setItem(key, "1");
-
-    supabase
-      .rpc("increment_views", {
-        noticia_id: article.id,
-      })
-      .then(({ error }) => {
-        if (error) {
-          console.error("Error al incrementar vistas:", error);
-        }
-      });
+    // Cargar script de Instagram si hay un embed
+    if (window.instgrm) {
+      window.instgrm.Embeds.process();
+    } else {
+      const script = document.createElement("script");
+      script.src = "//www.instagram.com/embed.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
   }, [article]);
 
   // ─────────────────────────────────────────────
@@ -161,14 +158,13 @@ export default function ArticlePage() {
 
         <main className="article-main">
           <article className="article">
-            {/* Categorías */}
+            {/* 1. Categorías */}
             <div className="article-tags-row">
               <CategoryBadge
                 nombre={article.categorias?.nombre}
                 color={article.categorias?.color}
                 size="md"
               />
-
               {(article.noticia_tags || []).map((t) => (
                 <CategoryBadge
                   key={t.categorias.slug}
@@ -179,17 +175,84 @@ export default function ArticlePage() {
               ))}
             </div>
 
-            {/* Título */}
+            {/* 2. Título */}
             <h1>{article.titulo}</h1>
 
-            {/* Imagen principal */}
-            <img
-              src={article.cover_image}
-              alt={article.titulo}
-              className="article-cover"
-            />
+            {/* 3. Autor y fecha */}
+            <div className="article-author-block">
+              {article.autores?.avatar_url &&
+                (article.autores?.slug ? (
+                  <Link
+                    to={`/autor/${article.autores.slug}`}
+                    style={{ display: "block", flexShrink: 0 }}
+                  >
+                    <img
+                      src={article.autores.avatar_url}
+                      alt={article.autores.nombre}
+                      className="article-author-avatar"
+                    />
+                  </Link>
+                ) : (
+                  <img
+                    src={article.autores.avatar_url}
+                    alt={article.autores.nombre}
+                    className="article-author-avatar"
+                  />
+                ))}
 
-            {/* Herramientas de administrador */}
+              <div className="article-author-info">
+                <div className="article-meta">
+                  {article.autores?.nombre && (
+                    <span>
+                      {article.autores?.slug ? (
+                        <Link
+                          to={`/autor/${article.autores.slug}`}
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          <span
+                            style={{ fontWeight: "bold" }}
+                            className="admin-clickable"
+                          >
+                            {article.autores.nombre}
+                          </span>
+                        </Link>
+                      ) : (
+                        <span style={{ fontWeight: "bold" }}>
+                          {article.autores.nombre}
+                        </span>
+                      )}
+                    </span>
+                  )}
+                  {formattedDate && (
+                    <span className="article-date-wrapper">
+                      {article.autores?.nombre && (
+                        <span className="article-meta-dot">·</span>
+                      )}
+                      <span className="article-date">{formattedDate}</span>
+                    </span>
+                  )}
+                </div>
+                {article.autores?.bio && (
+                  <p className="article-author-bio">{article.autores.bio}</p>
+                )}
+              </div>
+            </div>
+
+            {/* 4. Imagen principal */}
+            {article.cover_image && (
+              <img
+                src={article.cover_image}
+                alt={article.titulo}
+                className="article-cover"
+              />
+            )}
+
+            {/* ANUNCIO ESTRATÉGICO (SOLO MÓVIL): Aparece justo antes de leer */}
+            <div className="mobile-only-ad">
+              <PromoSlot items={PROMO_HOME2} aspectRatio="1600 / 686" />
+            </div>
+
+            {/* 5. Herramientas de administrador */}
             {session && (
               <div className="article-admin-toolbar">
                 <Link
@@ -216,7 +279,7 @@ export default function ArticlePage() {
                   type="button"
                   onClick={copyRedactorLink}
                   className="article-toolbar-btn"
-                  aria-label="Copiar link para Facebook"
+                  aria-label="Copiar link"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -230,8 +293,7 @@ export default function ArticlePage() {
                     <rect x="9" y="9" width="13" height="13" rx="2" />
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                   </svg>
-
-                  {copied ? "✓ Copiado" : "Copiar link"}
+                  {copied ? "Copiado" : "Copiar link"}
                 </button>
 
                 <Link
@@ -255,37 +317,7 @@ export default function ArticlePage() {
               </div>
             )}
 
-            {/* Autor y fecha */}
-            <div className="article-author-block">
-              {article.autores?.avatar_url && (
-                <img
-                  src={article.autores.avatar_url}
-                  alt={article.autores.nombre}
-                  className="article-author-avatar"
-                />
-              )}
-              <div className="article-author-info">
-                <div className="article-meta">
-                  {article.autores?.nombre && (
-                    <span>Por {article.autores.nombre}</span>
-                  )}
-                  {article.autores?.nombre && formattedDate && (
-                    <span className="article-meta-dot">·</span>
-                  )}
-                  {formattedDate && <span>{formattedDate}</span>}
-                </div>
-                {article.autores?.bio && (
-                  <p className="article-author-bio">{article.autores.bio}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="promo-slot2">
-              {/* Banner 1600x686 */}
-              <PromoSlot items={PROMO_HOME2} aspectRatio="1600 / 686" />
-            </div>
-
-            {/* Contenido */}
+            {/* 6. Contenido principal */}
             <div
               className="article-content"
               dangerouslySetInnerHTML={{
@@ -293,15 +325,32 @@ export default function ArticlePage() {
               }}
             />
 
-            {/* Compartir */}
-            <ShareButtons url={url} title={article.titulo} />
+            {/* 7. Fuentes Originales */}
+            <SourcesDisplay sources={article.fuentes} />
 
-            {/* Banner 1200x900 */}
-            <PromoSlot items={PROMO_HOME} aspectRatio="1200 / 900" />
+            {/* 8. Botones de Compartir */}
+            <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+              <ShareButtons url={url} title={article.titulo} />
+            </div>
+
+            {/* 9. Publicidad final de pie de artículo */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.5rem",
+                marginBottom: "2rem",
+              }}
+            >
+              {/* Este banner se esconde en móvil (porque ya lo mostramos arriba) pero se ve en Desktop */}
+              <div className="desktop-only-ad">
+                <PromoSlot items={PROMO_HOME2} aspectRatio="1600 / 686" />
+              </div>
+
+              {/* Este banner siempre aparece al final, sin importar el dispositivo */}
+              <PromoSlot items={PROMO_HOME} aspectRatio="1200 / 900" />
+            </div>
           </article>
-
-          {/* Fuentes */}
-          <SourcesDisplay sources={article.fuentes} />
         </main>
 
         {/* ─────────────────────────────────────

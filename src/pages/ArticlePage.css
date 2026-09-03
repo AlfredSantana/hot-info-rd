@@ -60,12 +60,19 @@ admin-btn.article-loading {
   text-underline-offset: 2px;
 }
 
-.article-content blockquote {
+/* Aplica estilo de cita solo si NO es un post de Instagram */
+.article-content blockquote:not(.instagram-media) {
   border-left: 3px solid var(--color-accent);
   padding-left: 1rem;
   margin: 1.25rem 0;
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+/* Centra el post de Instagram de forma elegante */
+.instagram-media {
+  margin: 2rem auto !important;
+  border-radius: var(--radius) !important;
 }
 
 .article-content ul,
@@ -147,9 +154,35 @@ admin-btn.article-loading {
   flex-shrink: 0;
 }
 
+/* Author info section */
+
 .article-author-info {
   min-width: 0;
 }
+
+.article-author-info span {
+  position: relative;
+  top: 3px;
+}
+
+.article-author-info p {
+  position: relative;
+  top: -5px;
+}
+
+.article-date-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; 
+  white-space: nowrap; 
+  transform: translateY(-1px);
+}
+
+.article-date {
+  color: #888; /* Un color distinto solo para la fecha */
+
+}
+
 
 .article-author-bio {
   font-size: 0.78rem;
@@ -237,5 +270,27 @@ admin-btn.article-loading {
     flex-shrink: 0;
     position: sticky;
     top: 5rem;
+  }
+}
+
+/* ==========================================
+   VISIBILIDAD DE ANUNCIOS (MOBILE VS DESKTOP)
+   ========================================== */
+.mobile-only-ad {
+  display: block;
+  margin: 1.5rem 0; /* Da un respiro entre la imagen y el texto */
+}
+
+.desktop-only-ad {
+  display: none;
+}
+
+/* Cuando la pantalla es grande (Desktop) invertimos las reglas */
+@media (min-width: 1024px) {
+  .mobile-only-ad {
+    display: none;
+  }
+  .desktop-only-ad {
+    display: block;
   }
 }

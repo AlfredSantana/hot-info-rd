@@ -18,6 +18,14 @@ const PROMO_HOME = [
   },
 ];
 
+const PROMO_ARTICLE = [
+  {
+    image: "/promo/banner-redes-1000x1250px.mp4",
+    link: "https://instagram.com/hotinford",
+    alt: "Síguenos en Instagram y Facebook",
+  },
+];
+
 const SECTIONS = [
   { slug: "farandula", label: "Farándula" },
   { slug: "entretenimiento", label: "Entretenimiento" },
@@ -146,6 +154,11 @@ export default function Home() {
           articles={sections[s.slug]}
         />
       ))}
+
+      {/* Nuevo anuncio al fondo del inicio */}
+      <div className="home-bottom-promo">
+        <PromoSlot items={PROMO_ARTICLE} aspectRatio="1000 / 1250" />
+      </div>
 
       {session && (
         <Link

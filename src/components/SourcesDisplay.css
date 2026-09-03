@@ -1,191 +1,55 @@
 .sources-display {
-  margin: var(--space-3) 0;
-  padding: 0 1rem;
+  margin: var(--space-3, 2.5rem) 0;
+  padding: 1.5rem;
+  background: var(--color-surface, #fff);
+  border-radius: var(--radius, 8px);
+  border: 1px solid var(--color-border, #eaeaea);
 }
 
 .sources-display-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-accent);
-  margin-bottom: 0.85rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-bg, #f5f5f5);
 }
 
-.sources-display-header h2 {
+.sources-display-header h3 {
   font-size: 1rem;
   margin: 0;
-}
-
-.sources-display-arrows {
-  display: flex;
-  gap: 0.4rem;
-}
-
-.sources-display-arrows button {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  font-size: 1.1rem;
-  line-height: 1;
-  color: var(--color-text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sources-display-arrows button:hover:not(:disabled) {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-.sources-display-arrows button:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-
-.sources-display-track {
-  display: flex;
-  gap: 0.75rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 0.25rem;
-  scrollbar-width: none;
-}
-
-.sources-display-track::-webkit-scrollbar {
-  display: none;
-}
-
-.source-slide {
-  scroll-snap-align: start;
-  flex: 0 0 auto;
-  width: 78%;
-  max-width: 320px;
-}
-
-.source-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  text-decoration: none;
-  background: var(--color-surface);
-  transition: border-color 0.15s ease;
-}
-
-.source-card:hover {
-  border-color: var(--color-accent);
-}
-
-.source-card-image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-
-.source-card-body {
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.source-card-domain {
-  font-size: 0.7rem;
+  color: var(--color-text-muted, #555);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--color-accent);
-  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
-.source-card-title {
-  font-size: 0.85rem;
-  color: var(--color-text);
-  line-height: 1.4;
-}
-
-.source-card-loading {
-  padding: 1rem;
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
-  min-height: 80px;
+.sources-display-list {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.source-card-fallback {
-  flex-direction: row;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 1rem;
-}
-
-.source-card-fallback-icon {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
+.source-embed-wrapper {
+  width: 100%;
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centra los widgets de Instagram o videos */
 }
 
-.source-card-fallback-icon svg {
-  width: 18px;
-  height: 18px;
+.source-link-wrapper {
+  word-break: break-all;
 }
 
-.source-card-fallback-text {
+.source-link-wrapper a {
   color: var(--color-accent);
-  font-weight: 600;
-  display: block;
+  text-decoration: underline;
+  font-size: 0.95rem;
 }
 
-.source-card-image-only {
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  background: var(--color-bg);
+.source-link-wrapper a:hover {
+  text-decoration: none;
 }
 
-.source-card-image-only img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: contain;
-}
-
-.source-card-video {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
-
-.source-card-video iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
+/* Ajustes para móviles */
 @media (max-width: 600px) {
   .sources-display {
-    padding: 0;
-  }
-}
-
-@media (min-width: 768px) {
-  .sources-display {
-    max-width: 760px;
-    margin: var(--space-3) auto;
+    padding: 1.25rem;
   }
 }

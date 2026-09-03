@@ -1,10 +1,22 @@
-export function formatArticleContent(raw) {
-  if (!raw) return ''
-  const hasBlockTags = /<(p|div|h[1-6]|ul|ol|li|blockquote)[\s>]/i.test(raw)
-  if (hasBlockTags) return raw
+export function formatArticleContent(content) {
+  if (!content) return "";
+  
+  // Divide el texto por cada doble salto de línea (Enter)
+  const paragraphs = content.split(/\n\s*\n/);
+  
+  const formatted = paragraphs.map(p => {
+    const trimmed = p.trim();
+    if (!trimmed) return "";
 
-  return raw
-    .split(/\n{2,}/)
-    .map((block) => `<p>${block.trim().replace(/\n/g, '<br />')}</p>`)
-    .join('')
+    // Si el bloque de texto empieza y termina con etiquetas HTML (como el de Instagram), 
+    // lo respetamos y NO lo metemos dentro de un <p>
+    if (trimmed.startsWith('<') && trimmed.endsWith('>')) {
+      return trimmed;
+    }
+    
+    // Si es texto normal, lo envolvemos en un párrafo y respetamos los saltos simples
+    return `<p>${trimmed.replace(/\n/g, '<br/>')}</p>`;
+  });
+
+  return formatted.join('\n');
 }
