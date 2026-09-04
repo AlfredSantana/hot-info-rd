@@ -26,6 +26,27 @@ export default function Sidebar({ articles }) {
       </ol>
 
       <PromoSlot items={PROMO_SIDEBAR} aspectRatio="1000 / 1250" />
+
+      {/* Widget de Facebook */}
+      <div
+        style={{ marginTop: "2rem", display: "flex", justifyContent: "center" }}
+      >
+        <iframe
+          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fhotinford&tabs=timeline&width=320&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true"
+          width="320"
+          height="500"
+          style={{
+            border: "none",
+            overflow: "hidden",
+            borderRadius: "var(--radius)",
+          }}
+          scrolling="no"
+          frameBorder="0"
+          allowFullScreen={true}
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          title="Perfil de Facebook Hot Info RD"
+        />
+      </div>
     </aside>
   );
 }

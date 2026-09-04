@@ -8,7 +8,7 @@ export default function ArticleCard({ article }) {
   return (
     <Link to={`/noticia/${article.slug}`} className="article-card">
       <div className="article-card-image-wrapper">
-        <img src={article.cover_image} alt={article.title} loading="lazy" />
+        <img src={article.cover_image} alt={article.title} />
         <TrendingBadge views={article.views} />
       </div>
       <div className="article-card-body">

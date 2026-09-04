@@ -1,74 +1,45 @@
-export function compressImage(file, { maxWidth = 1920, quality = 0.82, watermark = true } = {}) {
+export function compressImage(file) {
   return new Promise((resolve, reject) => {
-    if (!file.type.startsWith('image/')) {
-      resolve(file)
-      return
-    }
-
-    const img = new Image()
-    const reader = new FileReader()
-
-    reader.onload = (e) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
       img.onload = () => {
-        let { width, height } = img
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
 
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width)
-          width = maxWidth
+        // Límite máximo de tamaño para web
+        const MAX_WIDTH = 1200;
+
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
         }
 
-        const canvas = document.createElement('canvas')
-        canvas.width = width
-        canvas.height = height
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
 
-        const ctx = canvas.getContext('2d')
-        ctx.drawImage(img, 0, 0, width, height)
-
-        if (watermark) {
-          const text = 'HOT INFO RD'
-          const fontSize = Math.max(14, Math.round(width * 0.022))
-          ctx.font = `700 ${fontSize}px sans-serif`
-          ctx.textBaseline = 'bottom'
-
-          const paddingX = fontSize * 0.9
-          const paddingY = fontSize * 0.9
-          const textWidth = ctx.measureText(text).width
-
-          // Fondo semitransparente para que se lea sobre cualquier imagen
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.35)'
-          ctx.fillRect(
-            width - textWidth - paddingX * 2,
-            height - fontSize - paddingY * 1.4,
-            textWidth + paddingX * 2,
-            fontSize + paddingY * 0.9
-          )
-
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'
-          ctx.fillText(text, width - textWidth - paddingX, height - paddingY * 0.5)
-        }
-
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) {
-              reject(new Error('No se pudo comprimir la imagen.'))
-              return
-            }
-            const compressedFile = new File(
-              [blob],
-              file.name.replace(/\.\w+$/, '.jpg'),
-              { type: 'image/jpeg' }
-            )
-            resolve(compressedFile)
-          },
-          'image/jpeg',
-          quality
-        )
-      }
-      img.onerror = () => reject(new Error('No se pudo leer la imagen.'))
-      img.src = e.target.result
-    }
-
-    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'))
-    reader.readAsDataURL(file)
-  })
+        // Convertir a formato moderno WebP con 80% de calidad
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            reject(new Error("Error al procesar la imagen"));
+            return;
+          }
+          // Cambiar extensión a .webp
+          const newName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+          const newFile = new File([blob], newName, {
+            type: "image/webp",
+            lastModified: Date.now(),
+          });
+          resolve(newFile);
+        }, "image/webp", 0.8);
+      };
+      img.onerror = (error) => reject(error);
+    };
+    reader.onerror = (error) => reject(error);
+  });
 }

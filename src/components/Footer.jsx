@@ -20,7 +20,13 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-col">
-          <img src="/logo.png" alt="Hot Info RD" className="footer-logo" />
+          <img
+            src="/logo.png"
+            alt="Hot Info RD"
+            className="footer-logo"
+            width="851"
+            height="315"
+          />
           <p className="footer-tagline">
             Farándula, entretenimiento, virales y actualidad de República
             Dominicana.

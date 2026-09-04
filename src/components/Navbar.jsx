@@ -56,7 +56,7 @@ export default function Navbar() {
         </button>
 
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <img src="/logo.png" alt="Hot Info RD" />
+          <img src="/logo.png" alt="Hot Info RD" width="851" height="315" />
         </Link>
 
         <nav className="navbar-links navbar-links-desktop">
