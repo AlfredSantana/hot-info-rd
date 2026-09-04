@@ -21,7 +21,7 @@ const AD_MOBILE_TOP = [
 ];
 const AD_DESKTOP_TOP = [
   {
-    image: "/promo/banner-redes-728x90.mp4",
+    image: "/promo/banner-redes-960x300px.mp4",
     link: "https://instagram.com/hotinford",
   },
 ];
@@ -343,7 +343,7 @@ export default function ArticlePage() {
                     <PromoSlot items={AD_MOBILE_TOP} aspectRatio="320 / 100" />
                   </div>
                   <div className="desktop-only-ad" style={{ margin: "2rem 0" }}>
-                    <PromoSlot items={AD_DESKTOP_TOP} aspectRatio="728 / 90" />
+                    <PromoSlot items={AD_DESKTOP_TOP} aspectRatio="960 / 300" />
                   </div>
 
                   <div
