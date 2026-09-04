@@ -32,6 +32,7 @@ export default function Sidebar({ articles }) {
         style={{ marginTop: "2rem", display: "flex", justifyContent: "center" }}
       >
         <iframe
+          className="desktop-only-ad"
           src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fhotinford&tabs=timeline&width=320&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true"
           width="320"
           height="500"

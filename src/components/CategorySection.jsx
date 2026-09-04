@@ -1,15 +1,19 @@
-import { Link } from 'react-router-dom'
-import ArticleCard from './ArticleCard.jsx'
-import './CategorySection.css'
+import { Link } from "react-router-dom";
+import ArticleCard from "./ArticleCard.jsx";
+import "./CategorySection.css";
 
 export default function CategorySection({ title, slug, articles }) {
-  if (!articles || articles.length === 0) return null
+  if (!articles || articles.length === 0) return null;
 
   return (
     <section className="category-section">
       <div className="category-section-header">
         <h2>{title}</h2>
-        <Link to={`/categoria/${slug}`} className="category-section-more">
+        <Link
+          to={`/categoria/${slug}`}
+          className="category-section-more"
+          aria-label={`Ver más noticias de ${title}`}
+        >
           Ver más →
         </Link>
       </div>
@@ -20,5 +24,5 @@ export default function CategorySection({ title, slug, articles }) {
         ))}
       </div>
     </section>
-  )
+  );
 }
