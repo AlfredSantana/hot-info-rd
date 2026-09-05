@@ -3,8 +3,8 @@ import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient.js";
 import ArticleCard from "../components/ArticleCard.jsx";
 import SEO from "../components/SEO.jsx";
-import "./SearchPage.css";
 import PromoSlot from "../components/PromoSlot.jsx";
+import "./SearchPage.css";
 
 const CATEGORIES = [
   { slug: "farandula", label: "Farándula" },
@@ -18,11 +18,16 @@ const CATEGORIES = [
   { slug: "musica", label: "Música" },
 ];
 
-const AD_SEARCH = [
+const AD_SEARCH_TOP = [
   {
     image: "/promo/banner-redes-1600x200px.mp4",
-    link: "mailto:hotinfo@gmail.com",
-    alt: "Espacios disponibles para publicidad, contáctanos en hotinfo@gmail.com",
+    link: "https://instagram.com/hotinford",
+  },
+];
+const AD_SEARCH_MID = [
+  {
+    image: "/promo/banner-redes-960x300px.mp4",
+    link: "https://instagram.com/hotinford",
   },
 ];
 
@@ -40,13 +45,16 @@ function mapNoticia(n) {
 }
 
 export default function SearchPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
+  const [localQuery, setLocalQuery] = useState(query);
+
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
+    setLocalQuery(query);
     let active = true;
     setActiveFilter("all");
 
@@ -77,6 +85,13 @@ export default function SearchPage() {
       active = false;
     };
   }, [query]);
+
+  function handleSearch(e) {
+    e.preventDefault();
+    if (localQuery.trim()) {
+      setSearchParams({ q: localQuery.trim() });
+    }
+  }
 
   function articleHasCategory(article, slug) {
     const label = CATEGORIES.find((c) => c.slug === slug)?.label.toLowerCase();
@@ -110,6 +125,18 @@ export default function SearchPage() {
           <span>Búsqueda</span>
         </nav>
 
+        {/* Nueva barra de búsqueda interactiva */}
+        <form onSubmit={handleSearch} className="search-page-bar">
+          <input
+            type="text"
+            value={localQuery}
+            onChange={(e) => setLocalQuery(e.target.value)}
+            placeholder="Buscar más noticias..."
+            autoFocus
+          />
+          <button type="submit">Buscar</button>
+        </form>
+
         <div className="search-page-header">
           <h1>Resultados para "{query}"</h1>
           {!loading && (
@@ -139,27 +166,41 @@ export default function SearchPage() {
           </div>
         )}
 
-        {loading && <p>Buscando…</p>}
-        {!loading && filtered.length === 0 && (
-          <p>No se encontraron noticias.</p>
+        {/* Anuncio Superior */}
+        {query && (
+          <div style={{ marginBottom: "2rem" }}>
+            <PromoSlot items={AD_SEARCH_TOP} aspectRatio="1600 / 200" />
+          </div>
         )}
 
-        {/* Anuncio de Búsqueda */}
-        <div
-          style={{
-            marginTop: "-1.5rem",
-            marginBottom: "1.5rem",
-            maxWidth: "800px",
-          }}
-        >
-          <PromoSlot items={AD_SEARCH} aspectRatio="800 / 100" />
-        </div>
+        {loading && <div className="search-empty-state">Buscando…</div>}
 
-        <div className="search-grid">
-          {filtered.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
-        </div>
+        {!loading && query && filtered.length === 0 && (
+          <div className="search-empty-state">
+            No encontramos noticias relacionadas con "<strong>{query}</strong>".
+            Prueba con otras palabras.
+          </div>
+        )}
+
+        {/* Cuadrícula de resultados con anuncio dinámico en medio */}
+        {!loading && filtered.length > 0 && (
+          <div className="search-grid">
+            {filtered.slice(0, 6).map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+
+            {/* Inyecta el anuncio dinámico si hay más de 6 resultados */}
+            {filtered.length > 6 && (
+              <div className="search-ad-span">
+                <PromoSlot items={AD_SEARCH_MID} aspectRatio="960 / 300" />
+              </div>
+            )}
+
+            {filtered.slice(6).map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

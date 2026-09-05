@@ -1,5 +1,5 @@
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient.js";
 import SearchBar from "./SearchBar.jsx";
 import "./Navbar.css";
@@ -23,6 +23,11 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [session, setSession] = useState(null);
 
+  const location = useLocation();
+  const isSearchPage =
+    location.pathname.includes("/buscar") ||
+    location.pathname.includes("/search");
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
     const { data: listener } = supabase.auth.onAuthStateChange((_event, s) =>
@@ -43,7 +48,8 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
-      <div className="navbar-bar">
+      {/* 1. FILA PRINCIPAL: Logo, Búsqueda y Sesión */}
+      <div className="navbar-main-row">
         <button
           className="navbar-toggle"
           onClick={() => setOpen((prev) => !prev)}
@@ -56,16 +62,17 @@ export default function Navbar() {
         </button>
 
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <img src="/logo.png" alt="Hot Info RD" width="851" height="315" />
+          <img
+            src="/logos/logo-navbar-color.webp"
+            alt="Hot Info RD"
+            width="851"
+            height="315"
+          />
         </Link>
 
-        <nav className="navbar-links navbar-links-desktop">
-          {CATEGORIES.map((cat) => (
-            <Link key={cat.slug} to={`/categoria/${cat.slug}`}>
-              {cat.label}
-            </Link>
-          ))}
-          <SearchBar />
+        {/* Acciones de Escritorio */}
+        <div className="navbar-actions-desktop">
+          {!isSearchPage && <SearchBar />}
 
           {session ? (
             <div className="navbar-session">
@@ -81,44 +88,84 @@ export default function Navbar() {
               Acceder
             </Link>
           )}
-        </nav>
+        </div>
 
-        <button
-          className="navbar-search-toggle"
-          onClick={() => setSearchOpen((prev) => !prev)}
-          aria-label="Buscar"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            aria-hidden="true"
+        {/* Lupa para Móviles */}
+        {!isSearchPage && (
+          <button
+            className="navbar-search-toggle"
+            onClick={() => setSearchOpen((prev) => !prev)}
+            aria-label="Buscar"
           >
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-        </button>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+        )}
       </div>
 
-      {searchOpen && (
+      {/* 2. FILA SECUNDARIA (Solo Escritorio): Categorías */}
+      <nav className="navbar-categories-desktop">
+        <NavLink
+          to="/"
+          end
+          className={({ isActive }) =>
+            isActive ? "navbar-home-link is-active" : "navbar-home-link"
+          }
+        >
+          Inicio
+        </NavLink>
+
+        {CATEGORIES.map((cat) => (
+          <NavLink
+            key={cat.slug}
+            to={`/categoria/${cat.slug}`}
+            className={({ isActive }) => (isActive ? "is-active" : "")}
+          >
+            {cat.label}
+          </NavLink>
+        ))}
+      </nav>
+
+      {/* Panel de Búsqueda Móvil */}
+      {searchOpen && !isSearchPage && (
         <div className="navbar-search-panel">
           <SearchBar onSubmit={closeMenu} />
         </div>
       )}
 
-      <nav
-        className={`navbar-links navbar-links-mobile ${open ? "is-open" : ""}`}
-      >
+      {/* Menú Desplegable Móvil */}
+      <nav className={`navbar-links-mobile ${open ? "is-open" : ""}`}>
+        <NavLink
+          to="/"
+          end
+          onClick={closeMenu}
+          className={({ isActive }) =>
+            isActive
+              ? "navbar-home-link-mobile is-active"
+              : "navbar-home-link-mobile"
+          }
+        >
+          Inicio
+        </NavLink>
+
         {CATEGORIES.map((cat) => (
-          <Link
+          <NavLink
             key={cat.slug}
             to={`/categoria/${cat.slug}`}
             onClick={closeMenu}
+            className={({ isActive }) => (isActive ? "is-active" : "")}
           >
             {cat.label}
-          </Link>
+          </NavLink>
         ))}
 
         {session ? (

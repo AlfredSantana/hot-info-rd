@@ -21,6 +21,7 @@
   gap: 1rem;
 }
 
+/* Estado cerrado (Círculo perfecto) */
 .home-new-article-btn {
   position: fixed;
   bottom: 1.25rem;
@@ -28,24 +29,28 @@
   z-index: 60;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0; /* Quitamos el espacio extra cuando está cerrado */
   color: #fff;
   text-decoration: none;
   border: none;
   font-size: 0.8rem;
   font-weight: 700;
-  padding: 0.65rem 1rem;
-  border-radius: 999px;
+  padding: 0.8rem; /* Padding uniforme igual a todos los lados */
+  border-radius: 50px;
   box-shadow: var(--shadow-md);
   cursor: pointer;
   white-space: nowrap;
   background: var(--color-accent);
+  transition: all 0.3s ease;
 }
 
+/* Estado abierto (Óvalo / Píldora) */
 .home-new-article-btn:hover {
   background: var(--color-accent-dark);
+  padding: 0.65rem 1.2rem; /* Recupera la forma alargada */
+  gap: 0.4rem; /* Restaura el espacio entre el ícono y la palabra */
 }
-
 .home-new-article-btn svg {
   width: 15px;
   height: 15px;
@@ -73,5 +78,34 @@
 
 /* Reduce los espacios del anuncio móvil específicamente en el Home */
 .home-mobile-ad {
-  margin: -1rem 0 !important;
+  margin: -0.5rem 0 !important;
+}
+
+
+/* ==========================================
+   BOTÓN FLOTANTE EXPANDIBLE
+   ========================================== */
+.home-new-article-btn .home-fab-text {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 0.3s ease, opacity 0.3s ease, margin-left 0.3s ease;
+}
+
+.home-new-article-btn:hover .home-fab-text {
+  max-width: 120px;
+  opacity: 1;
+  margin-left: 0.2rem;
+}
+
+/* Modo celular: Ícono circular perfecto */
+@media (max-width: 768px) {
+  .home-new-article-btn .home-fab-text {
+    display: none !important;
+  }
+  
+  .home-new-article-btn {
+    padding: 0.8rem;
+    border-radius: 50%;
+  }
 }

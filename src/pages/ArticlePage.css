@@ -106,7 +106,8 @@ admin-btn.article-loading {
   border: none;
   font-size: 0.8rem;
   font-weight: 700;
-  padding: 0.65rem 1rem;
+  gap: 0; /* Sin espacio cuando el texto está oculto */
+  padding: 0.75rem; /* Padding igualitario para formar el círculo */
   border-radius: 999px;
   box-shadow: var(--shadow-md);
   cursor: pointer;
@@ -128,7 +129,7 @@ admin-btn.article-loading {
 }
 
 .article-toolbar-btn-accent:hover {
-  background: #132a76;
+  background: var(--color-accent-secondary-dark);
 }
 
 .article-toolbar-btn-accent-new {
@@ -313,4 +314,32 @@ admin-btn.article-loading {
 .article-content iframe[src*="facebook.com"] {
   max-width: 500px !important;
   width: 100% !important;
+}
+
+/* Estado inicial: texto oculto */
+.article-toolbar-btn .toolbar-text {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.3s ease, opacity 0.3s ease, margin-left 0.3s ease;
+}
+
+/* Hover: expandir y mostrar texto */
+.article-toolbar-btn:hover .toolbar-text {
+  max-width: 120px; /* Espacio suficiente para "Nueva noticia" */
+  opacity: 1;
+  margin-left: 0.4rem;
+}
+
+/* Modo celular: solo íconos perfectos */
+@media (max-width: 768px) {
+  .article-toolbar-btn .toolbar-text {
+    display: none !important;
+  }
+  
+  .article-toolbar-btn {
+    padding: 0.6rem; /* Los vuelve más simétricos para tocar con el dedo */
+    border-radius: 50%; /* Opcional: ponle '8px' si prefieres cuadrados con bordes curvos */
+  }
 }

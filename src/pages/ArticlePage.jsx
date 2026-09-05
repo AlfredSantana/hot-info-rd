@@ -251,6 +251,7 @@ export default function ArticlePage() {
             {/* 5. Herramientas de administrador */}
             {session && (
               <div className="article-admin-toolbar">
+                {/* Botón Editar */}
                 <Link
                   to={`/admin/editar/${article.id}`}
                   className="article-toolbar-btn article-toolbar-btn-accent"
@@ -268,8 +269,10 @@ export default function ArticlePage() {
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                     <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z" />
                   </svg>
-                  Editar
+                  <span className="toolbar-text">Editar</span>
                 </Link>
+
+                {/* Botón Copiar */}
                 <button
                   type="button"
                   onClick={copyRedactorLink}
@@ -288,8 +291,12 @@ export default function ArticlePage() {
                     <rect x="9" y="9" width="13" height="13" rx="2" />
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                   </svg>
-                  {copied ? "Copiado" : "Copiar link"}
+                  <span className="toolbar-text">
+                    {copied ? "Copiado" : "Copiar link"}
+                  </span>
                 </button>
+
+                {/* Botón Nueva Noticia */}
                 <Link
                   to="/admin/nueva-noticia"
                   className="article-toolbar-btn article-toolbar-btn-accent article-toolbar-btn-accent-new"
@@ -306,7 +313,7 @@ export default function ArticlePage() {
                   >
                     <path d="M12 5v14M5 12h14" />
                   </svg>
-                  Nueva noticia
+                  <span className="toolbar-text">Nueva noticia</span>
                 </Link>
               </div>
             )}

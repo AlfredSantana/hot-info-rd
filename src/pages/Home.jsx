@@ -25,6 +25,13 @@ const AD_FOOTER_HOME = [
   },
 ];
 
+const AD_FOOTER_HOME_DESKTOP = [
+  {
+    image: "/promo/banner-redes-1600x200px.mp4",
+    link: "https://instagram.com/hotinford",
+  },
+];
+
 const AD_MOBILE_HOME = [
   {
     image: "/promo/banner-redes-1456x180px.mp4",
@@ -141,27 +148,35 @@ export default function Home() {
 
       <PromoSlot items={AD_MOBILE_HOME} aspectRatio="728 / 90" />
 
-      <FeaturedCarousel articles={articles.slice(0, 5)} />
-
       <div className="home-layout">
-        <section className="home-grid">
-          {rest.slice(0, 4).map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
-        </section>
+        {/* Columna principal izquierda: Agrupa el carrusel y las tarjetas */}
+        <div className="home-main-col">
+          <FeaturedCarousel articles={articles.slice(0, 5)} />
 
-        {/* Anuncio exclusivo para celulares antes del Sidebar */}
-        <div
-          className="mobile-only-ad home-mobile-ad"
-          style={{ width: "100%" }}
-        >
-          <PromoSlot items={AD_UNIVERSAL} aspectRatio="800 / 100" />
+          <section className="home-grid" style={{ marginTop: "1.5rem" }}>
+            {rest.slice(0, 4).map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </section>
+
+          {/* Anuncio exclusivo para celulares antes del Sidebar */}
+          <div
+            className="mobile-only-ad home-mobile-ad"
+            style={{ width: "100%" }}
+          >
+            <PromoSlot items={AD_UNIVERSAL} aspectRatio="1600 / 200" />
+          </div>
         </div>
 
+        {/* Columna derecha: El Sidebar ahora se alinea desde arriba junto al carrusel */}
         <Sidebar articles={popular} />
       </div>
 
-      {SECTIONS.map((s, index) => (
+      <div className="desktop-only-ad" style={{ margin: "-1rem 0" }}>
+        <PromoSlot items={AD_FOOTER_HOME_DESKTOP} aspectRatio="1600 / 200" />
+      </div>
+
+      {SECTIONS.filter((s) => sections[s.slug]?.length >= 4).map((s, index) => (
         <div key={s.slug}>
           <CategorySection
             title={s.label}
@@ -169,7 +184,7 @@ export default function Home() {
             articles={sections[s.slug]}
           />
 
-          {/* Inserta un anuncio alargado (estilo barra) después de la 2da categoría */}
+          {/* Inserta un anuncio alargado (estilo barra) después de la 2da categoría VISIBLE */}
           {index === 1 && (
             <div
               style={{
@@ -183,8 +198,6 @@ export default function Home() {
           )}
         </div>
       ))}
-
-      {/* Eliminamos el div "home-bottom-promo" gigante que estaba aquí */}
 
       {session && (
         <Link
@@ -203,7 +216,7 @@ export default function Home() {
           >
             <path d="M12 5v14M5 12h14" />
           </svg>
-          Nueva noticia
+          <span className="home-fab-text">Nueva noticia</span>
         </Link>
       )}
     </>

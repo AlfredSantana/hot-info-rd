@@ -42,3 +42,58 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* ==========================================
+   VISTA DE LISTA COMPACTA (SOLO MÓVIL)
+   ========================================== */
+@media (max-width: 639px) {
+  .category-section-grid .article-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: none;
+    background: transparent;
+    border-bottom: 1px solid var(--color-border, #eaeaea);
+    padding-bottom: 1rem;
+    border-radius: 0;
+  }
+
+  /* Quitar el borde al último elemento para que se vea más limpio */
+  .category-section-grid .article-card:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .category-section-grid .article-card-image-wrapper {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .category-section-grid .article-card-image-wrapper img {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+  }
+
+  .category-section-grid .article-card-body {
+    padding: 0;
+    flex: 1;
+  }
+
+  .category-section-grid .article-card h2 {
+    font-size: 0.95rem;
+    margin: 1;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+
+  /* Ocultar elementos que ocupan espacio extra en móvil */
+  .category-section-grid .article-card p,
+  .category-section-grid .article-card-tags,
+  .category-section-grid .trending-badge {
+    display: none;
+  }
+}

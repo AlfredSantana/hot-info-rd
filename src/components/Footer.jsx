@@ -21,7 +21,7 @@ export default function Footer() {
       <div className="footer-content">
         <div className="footer-col">
           <img
-            src="/logo.png"
+            src="/logos/logo-footer-blanco.webp"
             alt="Hot Info RD"
             className="footer-logo"
             width="851"
