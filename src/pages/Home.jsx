@@ -34,7 +34,7 @@ const AD_FOOTER_HOME_DESKTOP = [
 
 const AD_MOBILE_HOME = [
   {
-    image: "/promo/banner-redes-1456x180px.mp4",
+    image: "/promo/banner-redes-blanco-1456x180px.mp4",
     link: "https://instagram.com/hotinford",
     alt: "Noticias al instante",
   },
