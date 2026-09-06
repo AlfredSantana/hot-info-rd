@@ -73,9 +73,15 @@ export default function ArticlePage() {
   // ─────────────────────────────────────────────
   // Obtener artículo
   // ─────────────────────────────────────────────
+  // NOTA: ya no filtramos por `published` aquí. La visibilidad
+  // de borradores vs. publicados la controla RLS según el rol
+  // (anon solo ve published = true, authenticated ve todo).
+  // Filtrar aquí también duplicaba la regla y causaba que el
+  // admin no pudiera ver sus propios borradores.
 
   useEffect(() => {
     let active = true;
+    setLoading(true);
 
     async function fetchArticle() {
       const { data, error } = await supabase
@@ -84,13 +90,14 @@ export default function ArticlePage() {
           "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), autores(nombre, avatar_url, bio, slug), noticia_tags(categoria_id, categorias(nombre, slug, color))",
         )
         .eq("slug", slug)
-        .eq("published", true)
         .single();
 
       if (!active) return;
 
       if (!error) {
         setArticle(data);
+      } else {
+        setArticle(null);
       }
 
       setLoading(false);
@@ -101,7 +108,7 @@ export default function ArticlePage() {
     return () => {
       active = false;
     };
-  }, [slug]);
+  }, [slug, session]);
 
   // ─────────────────────────────────────────────
   // Registrar visita
@@ -174,6 +181,19 @@ export default function ArticlePage() {
                   size="md"
                 />
               ))}
+
+              {/* Badge de estado: solo visible para el admin logueado */}
+              {session && (
+                <span
+                  className={`admin-status-badge ${
+                    article.published
+                      ? "admin-status-badge-published"
+                      : "admin-status-badge-draft"
+                  }`}
+                >
+                  {article.published ? "Publicado" : "Borrador"}
+                </span>
+              )}
             </div>
 
             {/* 2. Título */}

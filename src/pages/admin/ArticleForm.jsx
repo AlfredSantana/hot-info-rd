@@ -157,21 +157,20 @@ export default function ArticleForm({ articleId }) {
     }
   }
 
-  // --- ESTAS SON LAS FUNCIONES QUE SE HABÍAN BORRADO ---
   async function handleSubmit(e) {
     if (e) e.preventDefault();
     setStatus("saving");
 
     const payload = {
       titulo: form.titulo,
-      slug: form.slug,
+      slug: form.slug || slugify(form.titulo),
       cover_image: form.cover_image,
       excerpt: form.excerpt,
       contenido: form.contenido,
       categoria_id: form.categoria_id,
       autor_id: form.autor_id || null,
       fuentes: form.fuentes,
-      published_at: form.published_at,
+      published_at: form.published_at || new Date().toISOString().slice(0, 10),
       published: form.published,
     };
 
@@ -183,6 +182,7 @@ export default function ArticleForm({ articleId }) {
         .update(payload)
         .eq("id", articleId);
       if (error) {
+        console.error("Error actualizando noticia:", error);
         setStatus("error");
         return;
       }
@@ -193,16 +193,22 @@ export default function ArticleForm({ articleId }) {
         .select()
         .single();
       if (error) {
+        console.error("Error creando noticia:", error);
         setStatus("error");
         return;
       }
       currentArticleId = data.id;
     }
 
-    await supabase
+    // Actualización de Tags
+    const { error: deleteTagsError } = await supabase
       .from("noticia_tags")
       .delete()
       .eq("noticia_id", currentArticleId);
+
+    if (deleteTagsError) {
+      console.error("Error eliminando tags (RLS bloqueado):", deleteTagsError);
+    }
 
     if (form.tags.length > 0) {
       const tagsPayload = form.tags.map((tagId) => ({
@@ -213,7 +219,7 @@ export default function ArticleForm({ articleId }) {
     }
 
     setStatus("success");
-    navigate(`/noticia/${payload.slug}`);
+    navigate("/admin");
   }
 
   function requestDelete() {
@@ -234,7 +240,6 @@ export default function ArticleForm({ articleId }) {
       setDeleteTarget(null);
     }
   }
-  // -----------------------------------------------------
 
   if (loadingData) return <p>Cargando noticia…</p>;
 
@@ -250,7 +255,9 @@ export default function ArticleForm({ articleId }) {
       </div>
 
       {status === "error" && (
-        <p className="admin-error">Ocurrió un error al guardar.</p>
+        <p className="admin-error">
+          Ocurrió un error al guardar. Revisa la consola o los permisos.
+        </p>
       )}
 
       <form className="admin-form" onSubmit={handleSubmit}>
@@ -278,7 +285,6 @@ export default function ArticleForm({ articleId }) {
             />
           </label>
 
-          {/* EDITOR SIN ETIQUETA LABEL PARA EVITAR BUG DE SELECCIÓN */}
           <div className="admin-editor-container">
             <span
               style={{
@@ -364,18 +370,20 @@ export default function ArticleForm({ articleId }) {
               Slug (URL)
               <input
                 type="text"
+                name="slug"
                 value={form.slug}
                 onChange={(e) => {
                   setSlugEdited(true);
                   handleChange("slug", e.target.value);
                 }}
-                required
+                /* SE ELIMINÓ EL 'REQUIRED' AQUÍ */
               />
             </label>
 
             <label>
               Autor
               <select
+                name="autor"
                 value={form.autor_id}
                 onChange={(e) => handleChange("autor_id", e.target.value)}
               >
@@ -405,20 +413,22 @@ export default function ArticleForm({ articleId }) {
               />
             </label>
 
-            <div className="admin-form-row">
+            {/* CAJA ALINEADA CON CSS */}
+            <div className="admin-date-publish-row">
               <label>
                 Fecha
                 <input
                   type="date"
+                  name="fecha"
                   value={form.published_at}
                   onChange={(e) => handleChange("published_at", e.target.value)}
-                  required
                 />
               </label>
 
-              <label className="admin-checkbox">
+              <label className="admin-checkbox-aligned">
                 <input
                   type="checkbox"
+                  name="published"
                   checked={form.published}
                   onChange={(e) => handleChange("published", e.target.checked)}
                 />
@@ -433,7 +443,7 @@ export default function ArticleForm({ articleId }) {
             <>
               <button
                 type="button"
-                onClick={() => navigate(`/noticia/${form.slug}`)}
+                onClick={() => navigate("/admin")}
                 className="admin-btn-secondary"
               >
                 Cancelar
