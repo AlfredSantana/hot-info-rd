@@ -139,7 +139,7 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Hot Info RD — Noticias, farándula y entretenimiento"
+        title="Hot Info RD"
         description="Las últimas noticias de farándula, entretenimiento, virales y actualidad de República Dominicana."
         image="/og-default.jpg"
         url={window.location.origin}

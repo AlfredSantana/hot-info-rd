@@ -5,7 +5,7 @@ export default function TermsOfUse() {
   return (
     <>
       <SEO
-        title="Términos de Uso — Hot Info RD"
+        title="Términos de Uso"
         description="Términos y condiciones de uso de Hot Info RD."
         image="/og-default.jpg"
         url={`${window.location.origin}/terminos-de-uso`}

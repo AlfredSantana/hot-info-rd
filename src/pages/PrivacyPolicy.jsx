@@ -1,11 +1,11 @@
-import SEO from '../components/SEO.jsx'
-import './PrivacyPolicy.css'
+import SEO from "../components/SEO.jsx";
+import "./PrivacyPolicy.css";
 
 export default function PrivacyPolicy() {
   return (
     <>
       <SEO
-        title="Política de Privacidad — Hot Info RD"
+        title="Política de Privacidad"
         description="Política de privacidad y uso de cookies de Hot Info RD."
         image="/og-default.jpg"
         url={`${window.location.origin}/politica-de-privacidad`}
@@ -28,8 +28,8 @@ export default function PrivacyPolicy() {
           AdSense, para mostrar anuncios relevantes. Google puede usar cookies
           de DoubleClick para mostrar anuncios según visitas previas a este u
           otros sitios web. Puedes inhabilitar el uso de cookies de
-          personalización de anuncios visitando la configuración de anuncios
-          de Google.
+          personalización de anuncios visitando la configuración de anuncios de
+          Google.
         </p>
 
         <h2>Enlaces a terceros</h2>
@@ -41,10 +41,10 @@ export default function PrivacyPolicy() {
 
         <h2>Contacto</h2>
         <p>
-          Si tienes preguntas sobre esta política, puedes contactarnos a
-          través de nuestras redes sociales o correo de contacto.
+          Si tienes preguntas sobre esta política, puedes contactarnos a través
+          de nuestras redes sociales o correo de contacto.
         </p>
       </article>
     </>
-  )
+  );
 }

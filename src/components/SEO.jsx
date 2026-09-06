@@ -1,19 +1,19 @@
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from "react-helmet-async";
 
-const SITE_NAME = 'Hot Info RD'
-const DEFAULT_IMAGE = '/og-default.jpg' // colócala en /public
+const SITE_NAME = "HOT INFO RD";
+const DEFAULT_IMAGE = "/og-default.jpg"; // colócala en /public
 
 export default function SEO({
   title,
   description,
   image,
   url,
-  type = 'article',
+  type = "article",
   publishedTime,
   section,
 }) {
-  const fullTitle = `${title} — ${SITE_NAME}`
-  const finalImage = image || `${window.location.origin}${DEFAULT_IMAGE}`
+  const fullTitle = `${title}`;
+  const finalImage = image || `${window.location.origin}${DEFAULT_IMAGE}`;
 
   return (
     <Helmet>
@@ -32,10 +32,10 @@ export default function SEO({
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="es_DO" />
 
-      {type === 'article' && publishedTime && (
+      {type === "article" && publishedTime && (
         <meta property="article:published_time" content={publishedTime} />
       )}
-      {type === 'article' && section && (
+      {type === "article" && section && (
         <meta property="article:section" content={section} />
       )}
 
@@ -45,5 +45,5 @@ export default function SEO({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={finalImage} />
     </Helmet>
-  )
+  );
 }
