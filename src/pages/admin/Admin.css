@@ -461,6 +461,12 @@ html, body {
     padding: 0.6rem; /* Los vuelve más simétricos para tocar con el dedo */
     border-radius: 50%; /* Opcional: ponle '8px' si prefieres cuadrados con bordes curvos */
   }
+
+  .home-new-article-btn svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
 }
 
 /* BLINDAJE TÁCTIL PARA ADMIN Y BOTÓN FLOTANTE */
