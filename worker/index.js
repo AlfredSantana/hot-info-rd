@@ -1,6 +1,13 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
+
+    // Redirect www -> root (dominio "desnudo"), preservando path y query string
+    if (url.hostname.startsWith('www.')) {
+      url.hostname = url.hostname.replace(/^www\./, '')
+      return Response.redirect(url.toString(), 301)
+    }
+
     const userAgent = request.headers.get('user-agent') || ''
     const isBot = /facebookexternalhit|WhatsApp|Twitterbot|LinkedInBot|Slackbot/i.test(userAgent)
 
