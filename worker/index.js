@@ -1,15 +1,16 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
+    const userAgent = request.headers.get('user-agent') || ''
+    const isBot = /facebookexternalhit|WhatsApp|Twitterbot|LinkedInBot|Slackbot/i.test(userAgent)
 
-    // Redirect www -> root (dominio "desnudo"), preservando path y query string
-    if (url.hostname.startsWith('www.')) {
+    // Redirect www -> root (dominio "desnudo"), preservando path y query string.
+    // Los bots de redes sociales (WhatsApp, Facebook, etc.) NO deben ser redirigidos:
+    // muchos no siguen el redirect y se quedan sin poder leer las meta-tags de la noticia.
+    if (url.hostname.startsWith('www.') && !isBot) {
       url.hostname = url.hostname.replace(/^www\./, '')
       return Response.redirect(url.toString(), 301)
     }
-
-    const userAgent = request.headers.get('user-agent') || ''
-    const isBot = /facebookexternalhit|WhatsApp|Twitterbot|LinkedInBot|Slackbot/i.test(userAgent)
 
     // Sitemap dinámico
     if (url.pathname === '/sitemap.xml') {
@@ -19,7 +20,9 @@ export default {
     // Meta tags para bots en páginas de noticia
     const articleMatch = url.pathname.match(/^\/noticia\/([^/]+)\/?$/)
     if (articleMatch && isBot) {
-      return handleArticleMeta(env, articleMatch[1], request.url)
+      const canonicalUrl = new URL(request.url)
+      canonicalUrl.hostname = canonicalUrl.hostname.replace(/^www\./, '')
+      return handleArticleMeta(env, articleMatch[1], canonicalUrl.toString())
     }
 
     // Todo lo demás: sirve el sitio normal (SPA)
