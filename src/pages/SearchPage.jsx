@@ -65,18 +65,27 @@ export default function SearchPage() {
     }
 
     setLoading(true);
+
+    // Llamamos a la función inteligente de Supabase
     supabase
-      .from("noticias")
-      .select(
-        "*, categorias!noticias_categoria_id_fkey(nombre, slug, color), noticia_tags(categorias(nombre, slug, color))",
-      )
-      .eq("published", true)
-      .or(`titulo.ilike.%${query}%,excerpt.ilike.%${query}%`)
-      .order("published_at", { ascending: false })
+      .rpc("buscar_noticias_inteligente", { query_text: query })
       .then(({ data, error }) => {
         if (active) {
           if (error) console.error("Error en búsqueda:", error);
-          if (!error && data) setResults(data.map(mapNoticia));
+          if (!error && data) {
+            // Mapeamos los datos que devuelve la función al formato que usan tus tarjetas
+            const mappedResults = data.map((n) => ({
+              id: n.id,
+              slug: n.slug,
+              title: n.titulo,
+              excerpt: n.excerpt,
+              cover_image: n.cover_image,
+              category: n.categoria_nombre ?? "",
+              categoryColor: n.categoria_color ?? "#666",
+              tags: [], // Simplificado para la búsqueda rápida
+            }));
+            setResults(mappedResults);
+          }
           setLoading(false);
         }
       });

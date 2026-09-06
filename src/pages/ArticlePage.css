@@ -106,8 +106,8 @@ admin-btn.article-loading {
   border: none;
   font-size: 0.8rem;
   font-weight: 700;
-  gap: 0; /* Sin espacio cuando el texto está oculto */
-  padding: 0.75rem; /* Padding igualitario para formar el círculo */
+  gap: 0; 
+  padding: 0.75rem; 
   border-radius: 999px;
   box-shadow: var(--shadow-md);
   cursor: pointer;
@@ -122,6 +122,8 @@ admin-btn.article-loading {
 
 .article-toolbar-btn:hover {
   opacity: 0.9;
+  background: var(--color-bg);
+  color: var(--color-accent);
 }
 
 .article-toolbar-btn-accent {
@@ -129,15 +131,18 @@ admin-btn.article-loading {
 }
 
 .article-toolbar-btn-accent:hover {
-  background: var(--color-accent-secondary-dark);
+  opacity: 0.9;
+  background: var(--color-bg);
+  color: var(--color-accent);
 }
-
 .article-toolbar-btn-accent-new {
   background: var(--color-accent);
 }
 
 .article-toolbar-btn-accent-new:hover {
-  background: var(--color-accent-dark);
+  opacity: 0.9;
+  background: var(--color-bg);
+  color: var(--color-accent);
 }
 
 .article-author-block {
