@@ -41,10 +41,18 @@ export default {
 
 async function handleArticleMeta(env, slug, requestUrl) {
   const res = await fetch(
-    `${env.SUPABASE_URL}/rest/v1/noticias?slug=eq.${slug}&published=eq.true&select=titulo,excerpt,cover_image,published_at,categorias(nombre)`,
+    `${env.SUPABASE_URL}/rest/v1/noticias?slug=eq.${slug}&published=eq.true&select=titulo,excerpt,cover_image,published_at,categorias!noticias_categoria_id_fkey(nombre)`,
     { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }
   )
-  const [article] = await res.json()
+
+  const data = await res.json()
+
+  if (!res.ok || !Array.isArray(data)) {
+    console.error('Supabase error en handleArticleMeta:', JSON.stringify(data))
+    return new Response('Error fetching article', { status: 502, headers: { 'X-Worker-Debug': 'supabase-error' } })
+  }
+
+  const [article] = data
 
   if (!article) {
     return new Response('Not found', { status: 404, headers: { 'X-Worker-Debug': 'article-not-found' } })
@@ -91,6 +99,11 @@ async function handleSitemap(env, siteUrl) {
     { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }
   )
   const noticias = await res.json()
+
+  if (!res.ok || !Array.isArray(noticias)) {
+    console.error('Supabase error en handleSitemap:', JSON.stringify(noticias))
+    return new Response('Error generating sitemap', { status: 502 })
+  }
 
   const urls = noticias.map((n) => `
   <url>
