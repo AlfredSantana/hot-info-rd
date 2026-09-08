@@ -268,7 +268,12 @@ export default function ArticlePage() {
               />
             )}
 
-            {/* 5. Herramientas de administrador */}
+            {/* 5. Botones de Compartir */}
+            <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+              <ShareButtons url={url} title={article.titulo} />
+            </div>
+
+            {/* 6. Herramientas de administrador */}
             {session && (
               <div className="article-admin-toolbar">
                 {/* Botón Editar */}
@@ -338,7 +343,7 @@ export default function ArticlePage() {
               </div>
             )}
 
-            {/* 6. Contenido principal con anuncios intercalados */}
+            {/* 7. Contenido principal con anuncios intercalados */}
             {(() => {
               const htmlContent = formatArticleContent(article.contenido);
               const paragraphs = htmlContent.split("</p>");
@@ -381,11 +386,6 @@ export default function ArticlePage() {
                 </>
               );
             })()}
-
-            {/* 7. Botones de Compartir */}
-            <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-              <ShareButtons url={url} title={article.titulo} />
-            </div>
 
             {/* 8. Publicidad final de pie de artículo */}
             <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
