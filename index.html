@@ -9,6 +9,20 @@
     <link rel="manifest" href="public/logos//site.webmanifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hot Info RD</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-31V6FDM5P1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // send_page_view: false porque nuestra app es una SPA (React Router).
+      // El primer "page_view" y todos los siguientes los dispara manualmente
+      // el componente AnalyticsTracker en cada cambio de ruta, para no
+      // perder ni duplicar vistas al navegar sin recargar la página.
+      gtag('config', 'G-31V6FDM5P1', { send_page_view: false });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -15,11 +15,13 @@ import TermsOfUse from "./pages/TermsOfUse.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import Authors from "./pages/admin/Authors.jsx";
 import AuthorProfile from "./pages/AuthorProfile.jsx";
+import AnalyticsTracker from "./components/AnalyticsTracker.jsx";
 
 export default function App() {
   return (
     <>
       <ScrollToTop />
+      <AnalyticsTracker />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
