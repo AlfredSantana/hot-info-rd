@@ -9,13 +9,7 @@ export default {
     // muchos no siguen el redirect y se quedan sin poder leer las meta-tags de la noticia.
     if (url.hostname.startsWith('www.') && !isBot) {
       url.hostname = url.hostname.replace(/^www\./, '')
-      return new Response(null, {
-        status: 301,
-        headers: {
-          Location: url.toString(),
-          'X-Worker-Debug': 'www-redirect-triggered', // <-- TEMPORAL: quitar cuando confirmemos que funciona
-        },
-      })
+      return Response.redirect(url.toString(), 301)
     }
 
     // Sitemap dinámico
@@ -32,10 +26,7 @@ export default {
     }
 
     // Todo lo demás: sirve el sitio normal (SPA)
-    const response = await env.ASSETS.fetch(request)
-    const debugHeaders = new Headers(response.headers)
-    debugHeaders.set('X-Worker-Debug', 'worker-executed-fallthrough') // <-- TEMPORAL
-    return new Response(response.body, { status: response.status, headers: debugHeaders })
+    return env.ASSETS.fetch(request)
   },
 }
 
@@ -49,13 +40,13 @@ async function handleArticleMeta(env, slug, requestUrl) {
 
   if (!res.ok || !Array.isArray(data)) {
     console.error('Supabase error en handleArticleMeta:', JSON.stringify(data))
-    return new Response('Error fetching article', { status: 502, headers: { 'X-Worker-Debug': 'supabase-error' } })
+    return new Response('Error fetching article', { status: 502 })
   }
 
   const [article] = data
 
   if (!article) {
-    return new Response('Not found', { status: 404, headers: { 'X-Worker-Debug': 'article-not-found' } })
+    return new Response('Not found', { status: 404 })
   }
 
   const image = article.cover_image || `${new URL(requestUrl).origin}/og-default.jpg`
@@ -89,7 +80,7 @@ async function handleArticleMeta(env, slug, requestUrl) {
 </html>`
 
   return new Response(html, {
-    headers: { 'content-type': 'text/html; charset=UTF-8', 'X-Worker-Debug': 'article-meta-served' },
+    headers: { 'content-type': 'text/html; charset=UTF-8' },
   })
 }
 
