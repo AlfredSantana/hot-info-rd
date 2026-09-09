@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient.js";
 import { formatArticleContent } from "../lib/formatContent.js";
@@ -145,6 +146,38 @@ export default function ArticlePage() {
 
   const formattedDate = formatDate(article.published_at);
 
+  // ─────────────────────────────────────────────
+  // Datos estructurados Schema.org (NewsArticle)
+  // ─────────────────────────────────────────────
+  // Usamos el autor real si la noticia tiene uno asignado (ya lo tenemos
+  // cargado arriba, sin consulta extra); si no, "Hot Info RD" como editor.
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.titulo,
+    image: article.cover_image ? [article.cover_image] : undefined,
+    datePublished: article.published_at,
+    dateModified: article.published_at,
+    description: article.excerpt || "",
+    articleSection: article.categorias?.nombre,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    author: article.autores?.nombre
+      ? { "@type": "Person", name: article.autores.nombre }
+      : {
+          "@type": "Organization",
+          name: "Hot Info RD",
+          url: window.location.origin,
+        },
+    publisher: {
+      "@type": "Organization",
+      name: "Hot Info RD",
+      logo: {
+        "@type": "ImageObject",
+        url: `${window.location.origin}/logos/logo-navbar-color.webp`,
+      },
+    },
+  };
+
   return (
     <>
       {/* SEO */}
@@ -157,6 +190,16 @@ export default function ArticlePage() {
         publishedTime={article.published_at}
         section={article.categorias?.nombre}
       />
+
+      {/* Datos estructurados NewsArticle: solo para noticias publicadas,
+          para no confundir a Google con borradores que no debería indexar. */}
+      {article.published && (
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </Helmet>
+      )}
 
       {/* CONTENEDOR PRINCIPAL */}
       <div className="article-layout">
