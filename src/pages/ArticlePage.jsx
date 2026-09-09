@@ -162,7 +162,13 @@ export default function ArticlePage() {
     articleSection: article.categorias?.nombre,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     author: article.autores?.nombre
-      ? { "@type": "Person", name: article.autores.nombre }
+      ? {
+          "@type": "Person",
+          name: article.autores.nombre,
+          ...(article.autores?.slug
+            ? { url: `${window.location.origin}/autor/${article.autores.slug}` }
+            : {}),
+        }
       : {
           "@type": "Organization",
           name: "Hot Info RD",
